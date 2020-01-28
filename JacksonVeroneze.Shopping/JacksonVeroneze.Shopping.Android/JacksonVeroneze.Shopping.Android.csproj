@@ -55,6 +55,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl">
+      <Version>1.6.292</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="3.6.0.344457" />
     <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.1" />
     <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.1" />
@@ -68,6 +71,8 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\LoggerService.cs" />
+    <Compile Include="Services\SQLiteConnectionProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -91,6 +96,10 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\JacksonVeroneze.Shopping.Common\JacksonVeroneze.Shopping.Common.csproj">
+      <Project>{3381aa89-e767-40e4-b32f-c8e2ce9be537}</Project>
+      <Name>JacksonVeroneze.Shopping.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.csproj">
       <Project>{A682884C-CB44-4A89-B752-27BB634E0ABE}</Project>
       <Name>JacksonVeroneze.Shopping</Name>
