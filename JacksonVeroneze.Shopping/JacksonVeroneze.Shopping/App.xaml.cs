@@ -4,6 +4,7 @@ using JacksonVeroneze.Shopping.ViewModels;
 using JacksonVeroneze.Shopping.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using JacksonVeroneze.Shopping.IoC;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace JacksonVeroneze.Shopping
@@ -30,6 +31,8 @@ namespace JacksonVeroneze.Shopping
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+
+            InjectorBootStrapper.RegisterTypes(containerRegistry);
         }
     }
 }

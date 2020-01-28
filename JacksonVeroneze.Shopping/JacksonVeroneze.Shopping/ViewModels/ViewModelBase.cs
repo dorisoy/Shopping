@@ -1,46 +1,35 @@
-﻿using Prism.Commands;
+﻿using Prism.AppModel;
 using Prism.Mvvm;
 using Prism.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace JacksonVeroneze.Shopping.ViewModels
 {
-    public class ViewModelBase : BindableBase, IInitialize, INavigationAware, IDestructible
+    public class ViewModelBase : BindableBase, INavigationAware, IDestructible, IApplicationLifecycleAware, IInitialize
     {
-        protected INavigationService NavigationService { get; private set; }
+        protected INavigationService _navigationService { get; private set; }
 
-        private string _title;
-        public string Title
-        {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
-        }
+        private static bool _hasAttachedEventConnectivityChanged = false;
 
         public ViewModelBase(INavigationService navigationService)
-        {
-            NavigationService = navigationService;
-        }
+            => _navigationService = navigationService;
 
-        public virtual void Initialize(INavigationParameters parameters)
-        {
+        public virtual void OnNavigatedFrom(INavigationParameters parameters) { }
 
-        }
+        public virtual void OnNavigatedTo(INavigationParameters parameters) { }
 
-        public virtual void OnNavigatedFrom(INavigationParameters parameters)
-        {
+        public virtual void Initialize(INavigationParameters parameters) { }
 
-        }
+        public virtual void Destroy() { }
 
-        public virtual void OnNavigatedTo(INavigationParameters parameters)
-        {
+        public virtual void OnResume() { }
 
-        }
+        public virtual void OnSleep() { }
 
-        public virtual void Destroy()
-        {
+        public virtual void OnDisappearing() { }
 
-        }
+        internal virtual void OnBackButtonPressed() { }
+
+        internal virtual Task OnBackButtonPressedAsync() => Task.CompletedTask;
     }
 }

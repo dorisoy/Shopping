@@ -9,4 +9,9 @@
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1367" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\JacksonVeroneze.Shopping.Domain\JacksonVeroneze.Shopping.Domain.csproj" />
+    <ProjectReference Include="..\JacksonVeroneze.Shopping.IoC\JacksonVeroneze.Shopping.IoC.csproj" />
+  </ItemGroup>
+
 </Project>
