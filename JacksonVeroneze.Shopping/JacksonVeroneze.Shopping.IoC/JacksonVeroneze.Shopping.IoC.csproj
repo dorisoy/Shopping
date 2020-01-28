@@ -4,4 +4,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\JacksonVeroneze.Shopping.Domain\JacksonVeroneze.Shopping.Domain.csproj" />
+    <ProjectReference Include="..\JacksonVeroneze.Shopping.Infra.CrossCutting\JacksonVeroneze.Shopping.Infra.CrossCutting.csproj" />
+    <ProjectReference Include="..\JacksonVeroneze.Shopping.Infra.Data\JacksonVeroneze.Shopping.Infra.Data.csproj" />
+    <ProjectReference Include="..\JacksonVeroneze.Shopping.Services\JacksonVeroneze.Shopping.Services.csproj" />
+  </ItemGroup>
+
 </Project>

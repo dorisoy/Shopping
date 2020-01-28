@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\JacksonVeroneze.Shopping.Common\JacksonVeroneze.Shopping.Common.csproj" />
     <ProjectReference Include="..\JacksonVeroneze.Shopping.Domain\JacksonVeroneze.Shopping.Domain.csproj" />
+    <ProjectReference Include="..\JacksonVeroneze.Shopping.Infra.CrossCutting\JacksonVeroneze.Shopping.Infra.CrossCutting.csproj" />
   </ItemGroup>
 
 </Project>
