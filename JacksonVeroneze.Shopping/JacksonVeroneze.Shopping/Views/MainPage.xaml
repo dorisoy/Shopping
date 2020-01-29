@@ -1,11 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:prism="http://prismlibrary.com"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:controls="clr-namespace:JacksonVeroneze.Shopping.Controls"
+             xmlns:converters="clr-namespace:JacksonVeroneze.Shopping.Converters"
+             prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="JacksonVeroneze.Shopping.Views.MainPage"
-             Title="{Binding Title}">
+             Title="Catálogo">
 
-    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-        <Label Text="Welcome to Xamarin Forms and Prism!" />
-    </StackLayout>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Filtrar" Command="{Binding FilterByCategoryCommand}"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <FlexLayout Direction="Column">
+            <controls:ActivityIndicatorControl IsVisible="{Binding ViewModelState.IsLoading}" FlexLayout.Grow="1"></controls:ActivityIndicatorControl>
+            <controls:HasErrorControl Title="Erro ao carregar os dados." IsVisible="{Binding ViewModelState.HasError}" FlexLayout.Grow="1"></controls:HasErrorControl>
+
+            <FlexLayout Direction="Column" FlexLayout.Grow="1">
+                <ListView
+                ItemsSource="{Binding ListData, Mode=OneWay}"
+                HasUnevenRows="True"
+                CachingStrategy="RecycleElement"
+                Footer="">
+
+                    <!--<ListView.Behaviors>
+                        <behavior:EventToCommandBehavior EventName="ItemTapped" Command="{Binding NextStepCommand}" EventArgsParameterPath="Item" />
+                    </ListView.Behaviors>-->
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid ColumnSpacing="10" Margin="15,10,15,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <ffimageloading:CachedImage Source="{Binding Photo}" CacheDuration= "50" RetryCount= "3" RetryDelay= "600" DownsampleToViewSize = "true" Grid.Column="0" Grid.Row="0" />
+
+                                    <Label Text="{Binding Name}" Grid.Column="1" Grid.Row="0" />
+                                    <Label Text="{Binding Price}" Grid.Column="1" Grid.Row="1" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </FlexLayout>
+        </FlexLayout>
+    </ContentPage.Content>
 </ContentPage>

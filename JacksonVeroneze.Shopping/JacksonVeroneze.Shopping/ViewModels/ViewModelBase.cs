@@ -9,7 +9,12 @@ namespace JacksonVeroneze.Shopping.ViewModels
     {
         protected INavigationService _navigationService { get; private set; }
 
-        private static bool _hasAttachedEventConnectivityChanged = false;
+        private ViewModelState _viewModelState = new ViewModelState();
+        public ViewModelState ViewModelState
+        {
+            get => _viewModelState;
+            set => SetProperty(ref _viewModelState, value);
+        }
 
         public ViewModelBase(INavigationService navigationService)
             => _navigationService = navigationService;

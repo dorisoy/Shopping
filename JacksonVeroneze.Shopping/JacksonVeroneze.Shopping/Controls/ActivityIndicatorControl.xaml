@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="JacksonVeroneze.Shopping.Controls.ActivityIndicatorControl">
+    
+    <ContentView.Content>
+        <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+            <ActivityIndicator HorizontalOptions="Center" IsRunning="True" WidthRequest="35" HeightRequest="35"/>
+            <Label x:Name="title" IsVisible="False"  HorizontalOptions="Center" Margin="0,15,0,0"></Label>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

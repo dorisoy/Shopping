@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="akavache" Version="6.10.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\JacksonVeroneze.Shopping.Common\JacksonVeroneze.Shopping.Common.csproj" />
     <ProjectReference Include="..\JacksonVeroneze.Shopping.Domain\JacksonVeroneze.Shopping.Domain.csproj" />
     <ProjectReference Include="..\JacksonVeroneze.Shopping.Infra.CrossCutting\JacksonVeroneze.Shopping.Infra.CrossCutting.csproj" />
