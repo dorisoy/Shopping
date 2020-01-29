@@ -5,6 +5,10 @@ using JacksonVeroneze.Shopping.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using JacksonVeroneze.Shopping.IoC;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter.Push;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace JacksonVeroneze.Shopping
@@ -25,6 +29,13 @@ namespace JacksonVeroneze.Shopping
             InitializeComponent();
 
             await NavigationService.NavigateAsync("NavigationPage/MainPage");
+        }
+
+        protected override void OnStart()
+        {
+            AppCenter.Start("android=17c08802-7bfc-441d-8eeb-ce5771c7fc23;" +
+                  "ios=0b6e4b65-106b-4453-83ba-539cb9280365",
+                  typeof(Analytics), typeof(Crashes));
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
