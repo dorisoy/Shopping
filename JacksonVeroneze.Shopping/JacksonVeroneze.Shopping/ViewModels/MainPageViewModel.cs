@@ -18,6 +18,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
     public class MainPageViewModel : ViewModelBase
     {
         private readonly IPageDialogService _pageDialogService;
+        private readonly ICrashlyticsService _crashlyticsService;
         //
         private readonly ICategoryService _categoryService;
         private readonly IProductService _productService;
@@ -51,6 +52,9 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //   pageDialogService:
         //     The pageDialogService param.
         //
+        //   crashlyticsService:
+        //     The crashlyticsService param.
+        //
         //   categoryService:
         //     The categoryService param.
         //
@@ -62,11 +66,13 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //
         public MainPageViewModel(INavigationService navigationService,
             IPageDialogService pageDialogService,
+            ICrashlyticsService crashlyticsService,
             ICategoryService categoryService,
             IProductService productService,
             IPromotionService promotionService) : base(navigationService)
         {
             _pageDialogService = pageDialogService;
+            _crashlyticsService = crashlyticsService;
             _categoryService = categoryService;
             _productService = productService;
             _promotionService = promotionService;

@@ -16,6 +16,7 @@ namespace JacksonVeroneze.Shopping.IoC
             containerRegistry.Register<IFavoriteService, FavoriteService>();
             containerRegistry.Register<IProductService, ProductService>();
             containerRegistry.Register<IPromotionService, PromotionService>();
+            containerRegistry.Register<ICrashlyticsService, CrashlyticsService>();
 
             // Repositories
             containerRegistry.Register<IFavoriteRepository, FavoriteRepository>();
