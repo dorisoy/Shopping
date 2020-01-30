@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using JacksonVeroneze.Shopping.Common;
+using SQLite;
 using System.IO;
 
 namespace JacksonVeroneze.Shopping.iOS.Services

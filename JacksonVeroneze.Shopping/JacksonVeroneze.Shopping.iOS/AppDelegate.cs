@@ -1,4 +1,6 @@
 ﻿using Foundation;
+using JacksonVeroneze.Shopping.Common;
+using JacksonVeroneze.Shopping.iOS.Services;
 using Prism;
 using Prism.Ioc;
 using UIKit;
@@ -35,7 +37,7 @@ namespace JacksonVeroneze.Shopping.iOS
     {
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            // Register any platform specific implementations
+            containerRegistry.Register<ISQLiteConnectionProvider, SQLiteConnectionProvider>();
         }
     }
 }

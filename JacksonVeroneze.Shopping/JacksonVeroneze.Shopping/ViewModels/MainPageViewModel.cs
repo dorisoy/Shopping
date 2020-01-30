@@ -1,4 +1,6 @@
-﻿using JacksonVeroneze.Shopping.Domain.Interface.Services;
+﻿using JacksonVeroneze.Shopping.Domain.Entities;
+using JacksonVeroneze.Shopping.Domain.Interface.Repositories;
+using JacksonVeroneze.Shopping.Domain.Interface.Services;
 using JacksonVeroneze.Shopping.Domain.Results;
 using JacksonVeroneze.Shopping.MvvmHelpers;
 using JacksonVeroneze.Shopping.Services.Interfaces;
@@ -25,6 +27,8 @@ namespace JacksonVeroneze.Shopping.ViewModels
         private readonly IFavoriteService _favoriteService;
         private readonly IProductService _productService;
         private readonly IPromotionService _promotionService;
+        //
+        private readonly IFavoriteRepository _favoriteRepository;
 
         private DelegateCommand _filterByCategoryCommand;
         private DelegateCommand _refreshCommand;
@@ -43,7 +47,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
         public DelegateCommand<ProductModelData> AddRemoveFavoriteCommand =>
             _addRemoveFavoriteCommand ?? (
-                _addRemoveFavoriteCommand = new DelegateCommand<ProductModelData>(AddRemoveFavorite));
+                _addRemoveFavoriteCommand = new DelegateCommand<ProductModelData>(AddRemoveFavoriteAsync));
 
         public DelegateCommand FilterByCategoryCommand =>
             _filterByCategoryCommand ?? (
@@ -93,13 +97,17 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //   promotionService:
         //     The promotionService param.
         //
+        //   favoriteRepository:
+        //     The favoriteRepository param.
+        //
         public MainPageViewModel(INavigationService navigationService,
             IPageDialogService pageDialogService,
             ICrashlyticsService crashlyticsService,
             ICategoryService categoryService,
             IFavoriteService favoriteService,
             IProductService productService,
-            IPromotionService promotionService) : base(navigationService)
+            IPromotionService promotionService,
+            IFavoriteRepository favoriteRepository) : base(navigationService)
         {
             _pageDialogService = pageDialogService;
             _crashlyticsService = crashlyticsService;
@@ -107,6 +115,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
             _favoriteService = favoriteService;
             _productService = productService;
             _promotionService = promotionService;
+            _favoriteRepository = favoriteRepository;
         }
 
         //
@@ -117,10 +126,10 @@ namespace JacksonVeroneze.Shopping.ViewModels
         {
             IList<IActionSheetButton> buttons = new List<IActionSheetButton>();
 
-            Action<CategoryResult> showProductsBycategoryAction = (i)
-                => ListData.ReplaceRange(FactoryProductModelData(_products.Where(x => x.CategoryId == i.Id).ToList()));
+            Action<CategoryResult> showProductsBycategoryAction = async (i)
+                => ListData.ReplaceRange(await FactoryProductModelDataAsync(_products.Where(x => x.CategoryId == i.Id).ToList()));
 
-            Action showAllProducts = () => ListData.ReplaceRange(FactoryProductModelData(_products));
+            Action showAllProducts = async () => ListData.ReplaceRange(await FactoryProductModelDataAsync(_products));
 
             buttons.Add(ActionSheetButton.CreateButton("Todas as categorias", showAllProducts));
 
@@ -178,9 +187,16 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //   productModelData:
         //     The productModelData param.
         //
-        public void AddRemoveFavorite(ProductModelData productModelData)
+        public async void AddRemoveFavoriteAsync(ProductModelData productModelData)
         {
+            //Favorite favorite = await _favoriteRepository.FindByProductId(productModelData.Id);
 
+            //if (favorite != null && productModelData.IsFavorite is true)
+            //    await _favoriteRepository.RemoveAsync(favorite);
+
+            //favorite = new Favorite(productModelData.Id);
+
+            //await _favoriteService.AddAsync(favorite);
 
             productModelData.IsFavorite = !productModelData.IsFavorite;
         }
@@ -217,7 +233,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
                 _products = await _productService.FindAllAsync();
                 _promotions = await _promotionService.FindAllAsync();
 
-                ListData.AddRange(FactoryProductModelData(_products));
+                ListData.AddRange(await FactoryProductModelDataAsync(_products));
             }
             catch (Exception e)
             {
@@ -235,17 +251,26 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //   productResults:
         //     The productResults param.
         //
-        private IEnumerable<ProductModelData> FactoryProductModelData(IList<ProductResult> productResults)
+        private async Task<IList<ProductModelData>> FactoryProductModelDataAsync(IList<ProductResult> productResults)
         {
-            return productResults.Select(x => new ProductModelData()
+            IList<ProductModelData> productModelDatas = new List<ProductModelData>();
+
+            foreach (ProductResult x in productResults)
             {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description,
-                Photo = x.Photo,
-                Price = x.Price,
-                Quantity = 5
-            });
+                //Favorite favorite = await _favoriteRepository.FindByProductId(x.Id);
+
+                productModelDatas.Add(new ProductModelData()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    Photo = x.Photo,
+                    Price = x.Price,
+                    IsFavorite = false
+                });
+            }
+
+            return productModelDatas;
         }
     }
 }
