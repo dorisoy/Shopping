@@ -52,6 +52,8 @@
     <BundleAssemblies>false</BundleAssemblies>
     <MandroidI18n />
     <AndroidLinkMode>None</AndroidLinkMode>
+    <AndroidSupportedAbis />
+    <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -79,6 +81,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\LoggerService.cs" />
     <Compile Include="Services\SQLiteConnectionProvider.cs" />
+    <Compile Include="SplashActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -90,6 +93,14 @@
     <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher_splash.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher_splash.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher_splash.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher_splash.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_splash.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\drawable-hdpi\icon_add.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon_add.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon_add.png" />
@@ -111,6 +122,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\splash.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Tabbar.axml" />
