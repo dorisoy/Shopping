@@ -84,6 +84,30 @@
     <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher.png" />
+    
+    <AndroidResource Include="Resources\drawable-hdpi\icon_add.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_add.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_add.png" />
+
+    <AndroidResource Include="Resources\drawable-hdpi\icon_arrow_downward.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_arrow_downward.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_arrow_downward.png" />
+
+    <AndroidResource Include="Resources\drawable-hdpi\icon_filter.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_filter.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_filter.png" />
+
+    <AndroidResource Include="Resources\drawable-hdpi\icon_remove.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_remove.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_remove.png" />
+
+    <AndroidResource Include="Resources\drawable-hdpi\icon_star_black.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_star_black.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_star_black.png" />
+
+    <AndroidResource Include="Resources\drawable-hdpi\icon_star_border.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_star_border.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_star_border.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />

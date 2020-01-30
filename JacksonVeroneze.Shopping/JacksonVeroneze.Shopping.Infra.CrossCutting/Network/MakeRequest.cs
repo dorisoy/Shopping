@@ -57,7 +57,7 @@ namespace JacksonVeroneze.Shopping.Infra.CrossCutting.Network
             offset =>
             {
                 TimeSpan elapsed = DateTimeOffset.Now - offset;
-                return elapsed > new TimeSpan(hours: 0, minutes: 0, seconds: 50);
+                return elapsed > new TimeSpan(hours: 0, minutes: 30, seconds: 0);
             });
 
             return await cachedConferences.FirstOrDefaultAsync();

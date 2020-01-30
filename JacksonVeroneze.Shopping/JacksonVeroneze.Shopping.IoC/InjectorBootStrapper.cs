@@ -3,6 +3,7 @@ using JacksonVeroneze.Shopping.Domain.Interface.Repositories;
 using JacksonVeroneze.Shopping.Domain.Interface.Services;
 using JacksonVeroneze.Shopping.Infra.CrossCutting.Network;
 using JacksonVeroneze.Shopping.Services;
+using JacksonVeroneze.Shopping.Services.Interfaces;
 using Prism.Ioc;
 
 namespace JacksonVeroneze.Shopping.IoC

@@ -1,9 +1,8 @@
-﻿using JacksonVeroneze.Shopping.Common;
-using JacksonVeroneze.Shopping.Domain.Entities;
-using JacksonVeroneze.Shopping.Domain.Interface.Repositories;
-using JacksonVeroneze.Shopping.Domain.Interface.Services;
-using JacksonVeroneze.Shopping.Services.Interfaces;
-using System.Threading.Tasks;
+﻿using JacksonVeroneze.Shopping.Services.Interfaces;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using System;
+using System.Collections.Generic;
 
 namespace JacksonVeroneze.Shopping.Services
 {
@@ -16,13 +15,13 @@ namespace JacksonVeroneze.Shopping.Services
 
         //
         // Summary:
-        //     Method responsible for recording a certain error / event in the App-Center.
+        //     Method responsible for recording a certain error/event in the App-Center.
         // 
         // Parameters:
         //   e:
         //     The e param.
         //
-        public async void TrackErrorAsync(Exception e)
+        public void TrackError(Exception e)
         {
             try
             {
@@ -33,7 +32,7 @@ namespace JacksonVeroneze.Shopping.Services
 
         //
         // Summary:
-        //     Method responsible for recording a certain error / event in the App-Center.
+        //     Method responsible for recording a certain error/event in the App-Center.
         // 
         // Parameters:
         //   eventName:
@@ -42,7 +41,7 @@ namespace JacksonVeroneze.Shopping.Services
         //   dictionary:
         //     The dictionary param.
         //
-        public void TrackEventAsync(string eventName, IDictionary<string, string> dictionary)
+        public void TrackEvent(string eventName, IDictionary<string, string> dictionary)
         {
             try
             {
