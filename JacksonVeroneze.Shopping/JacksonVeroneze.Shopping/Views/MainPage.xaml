@@ -13,6 +13,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <converters:ValueToBrlConverter x:Key="ValueToBrlConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -21,11 +22,48 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <FlexLayout Direction="Column">
-            <controls:ActivityIndicatorControl IsVisible="{Binding ViewModelState.IsLoading}" FlexLayout.Grow="1"></controls:ActivityIndicatorControl>
-            <controls:HasErrorControl Title="Erro ao carregar os dados." IsVisible="{Binding ViewModelState.HasError}" FlexLayout.Grow="1"></controls:HasErrorControl>
+        <StackLayout>
+            <controls:ActivityIndicatorControl Title="Carregando produtos." IsVisible="{Binding ViewModelState.IsLoading}" VerticalOptions="CenterAndExpand"></controls:ActivityIndicatorControl>
+            <controls:HasErrorControl Title="Erro ao carregar os dados." IsVisible="{Binding ViewModelState.HasError}" VerticalOptions="CenterAndExpand"></controls:HasErrorControl>
 
-            <FlexLayout Direction="Column" FlexLayout.Grow="1">
+            <Grid IsVisible="{Binding ViewModelState.HasData}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid BackgroundColor="#e3e3e3" Padding="10" Grid.Row="0" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                    </Grid.RowDefinitions>
+
+                    <SearchBar
+                    x:Name="SearchBar"
+                    SearchCommand="{Binding SearchCommand}" 
+                    SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
+                    Placeholder="Busca por nome do produto."
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="White"
+                    Grid.Column="0"
+                    Grid.Row="0">
+
+                        <SearchBar.Behaviors>
+                            <!--<behaviourControls:TextChangedSearchBarBehavior />-->
+                        </SearchBar.Behaviors>
+                    </SearchBar>
+
+                </Grid>
+
                 <ListView
                 ItemsSource="{Binding ListData, Mode=OneWay}"
                 IsPullToRefreshEnabled="True"
@@ -34,7 +72,8 @@
                 HasUnevenRows="True"
                 SeparatorVisibility="None"
                 CachingStrategy="RecycleElement"
-                Footer="">
+                Footer=""
+                 Grid.Row="1" Grid.Column="0">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -61,9 +100,9 @@
 
                                         <StackLayout BackgroundColor="#e3e3e3" Orientation="Horizontal" HorizontalOptions="Start" Padding="3" Grid.Row="1" Grid.Column="1">
                                             <Image Source="icon_arrow_downward" WidthRequest="15" HeightRequest="15" HorizontalOptions="Start" />
-                                            <Label Text="12,5%" TextColor="White" />
+                                            <Label Text="{Binding PercentageDiscount, StringFormat='{0}%'}" TextColor="White" />
                                         </StackLayout>
-                                        
+
                                         <Label HorizontalTextAlignment="Center" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
                                             <Label.FormattedText>
                                                 <FormattedString>
@@ -73,7 +112,7 @@
                                             </Label.FormattedText>
                                         </Label>
 
-                                        <Label Text="{Binding Price, StringFormat='R$ {0}'}" FontSize="Subtitle" FontAttributes="Bold" VerticalTextAlignment="Center" Grid.Row="2" Grid.Column="1" />
+                                        <Label Text="{Binding PriceWithDiscount, Converter={StaticResource ValueToBrlConverter}}" FontSize="Subtitle" FontAttributes="Bold" VerticalTextAlignment="Center" Grid.Row="2" Grid.Column="1" />
                                         <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
                                             <ImageButton Source="icon_remove" Command="{Binding BindingContext.DecrementQuantityCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand" BackgroundColor="#00CD57" HeightRequest="35" />
                                             <ImageButton Source="icon_add" Command="{Binding BindingContext.IncrementQuantityCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand" BackgroundColor="#00CD57" HeightRequest="35" />
@@ -84,7 +123,11 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-            </FlexLayout>
-        </FlexLayout>
+
+                <StackLayout BackgroundColor="#70378D" HeightRequest="45" Padding="5" Grid.Row="2" Grid.Column="0">
+                    <Button Text="{Binding TextButtonBuy}" Command="{Binding BuyCommand}" FontAttributes="Bold" BackgroundColor="#FFFF8C" HorizontalOptions="Center" HeightRequest="45" VerticalOptions="Center" />
+                </StackLayout>
+            </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

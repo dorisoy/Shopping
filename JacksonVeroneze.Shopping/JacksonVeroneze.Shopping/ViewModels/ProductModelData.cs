@@ -1,6 +1,4 @@
 ﻿using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
 namespace JacksonVeroneze.Shopping.ViewModels
 {
     public class ProductModelData : BindableBase
@@ -13,7 +11,28 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
         public string Photo { get; set; }
 
-        public double Price { get; set; }
+        public int? CategoryId { get; set; }
+
+        private double _originalPrice = 0;
+        public double OriginalPrice
+        {
+            get => _originalPrice;
+            set => SetProperty(ref _originalPrice, value);
+        }
+
+        private double _priceWithDiscount = 0;
+        public double PriceWithDiscount
+        {
+            get => _priceWithDiscount;
+            set => SetProperty(ref _priceWithDiscount, value);
+        }
+
+        private double _percentageDiscount = 0;
+        public double PercentageDiscount
+        {
+            get => _percentageDiscount;
+            set => SetProperty(ref _percentageDiscount, value);
+        }
 
         private int _quantity = 0;
         public int Quantity

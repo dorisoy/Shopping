@@ -4,13 +4,16 @@ using JacksonVeroneze.Shopping.Domain.Interface.Services;
 using JacksonVeroneze.Shopping.Domain.Results;
 using JacksonVeroneze.Shopping.MvvmHelpers;
 using JacksonVeroneze.Shopping.Services.Interfaces;
+using JacksonVeroneze.Shopping.Views;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace JacksonVeroneze.Shopping.ViewModels
 {
@@ -30,12 +33,16 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //
         private readonly IFavoriteRepository _favoriteRepository;
 
+        private DelegateCommand _buyCommand;
         private DelegateCommand _filterByCategoryCommand;
         private DelegateCommand _refreshCommand;
-
         private DelegateCommand<ProductModelData> _decrementQuantityCommand;
         private DelegateCommand<ProductModelData> _incrementQuantityCommand;
         private DelegateCommand<ProductModelData> _addRemoveFavoriteCommand;
+
+        public DelegateCommand BuyCommand =>
+            _buyCommand ?? (
+                _buyCommand = new DelegateCommand(BuyAsync));
 
         public DelegateCommand<ProductModelData> DecrementQuantityCommand =>
             _decrementQuantityCommand ?? (
@@ -69,6 +76,13 @@ namespace JacksonVeroneze.Shopping.ViewModels
         {
             get => _listData;
             set => SetProperty(ref _listData, value);
+        }
+
+        private string _textButtonBuy = "Comprar";
+        public string TextButtonBuy
+        {
+            get => _textButtonBuy;
+            set => SetProperty(ref _textButtonBuy, value);
         }
 
         //
@@ -116,6 +130,8 @@ namespace JacksonVeroneze.Shopping.ViewModels
             _productService = productService;
             _promotionService = promotionService;
             _favoriteRepository = favoriteRepository;
+
+            ListData.CollectionChanged += (s, e) => UpdateViewModeStateData(s as IEnumerable<object>);
         }
 
         //
@@ -156,6 +172,15 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // Summary:
         //     Method responsible for performing the command action.
         // 
+        public async void BuyAsync()
+        {
+            await _navigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(CartPage)}");
+        }
+
+        //
+        // Summary:
+        //     Method responsible for performing the command action.
+        // 
         // Parameters:
         //   productModelData:
         //     The productModelData param.
@@ -163,7 +188,13 @@ namespace JacksonVeroneze.Shopping.ViewModels
         public void DecrementQuantity(ProductModelData productModelData)
         {
             if (productModelData.Quantity - 1 >= 0)
+            {
                 productModelData.Quantity--;
+
+                UpdateDataProduct(productModelData);
+
+                UpdateTextButtonBuy();
+            }
         }
 
         //
@@ -177,6 +208,10 @@ namespace JacksonVeroneze.Shopping.ViewModels
         public void IncrementQuantity(ProductModelData productModelData)
         {
             productModelData.Quantity++;
+
+            UpdateDataProduct(productModelData);
+
+            UpdateTextButtonBuy();
         }
 
         //
@@ -233,7 +268,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
                 _products = await _productService.FindAllAsync();
                 _promotions = await _promotionService.FindAllAsync();
 
-                ListData.AddRange(await FactoryProductModelDataAsync(_products));
+                ListData.ReplaceRange(await FactoryProductModelDataAsync(_products));
             }
             catch (Exception e)
             {
@@ -265,12 +300,80 @@ namespace JacksonVeroneze.Shopping.ViewModels
                     Name = x.Name,
                     Description = x.Description,
                     Photo = x.Photo,
-                    Price = x.Price,
+                    OriginalPrice = x.Price,
+                    PriceWithDiscount = x.Price,
+                    CategoryId = x.CategoryId,
                     IsFavorite = false
                 });
             }
 
             return productModelDatas;
+        }
+
+        //
+        // Summary:
+        //     Method responsible for update data in ProductModelData.
+        // 
+        // Parameters:
+        //   productModelData:
+        //     The productModelData param.
+        //
+        private void UpdateDataProduct(ProductModelData productModelData)
+        {
+            if (productModelData.CategoryId is null)
+                return;
+
+            if (productModelData.Quantity == 0)
+            {
+                productModelData.PriceWithDiscount = productModelData.OriginalPrice;
+                productModelData.PercentageDiscount = 0;
+
+                return;
+            }
+
+            PromotionPoliceResult promotionPoliceResult = FindPromotionPoliceResultByProductCategory(productModelData);
+
+            if (promotionPoliceResult is null)
+            {
+                productModelData.PriceWithDiscount = productModelData.OriginalPrice * productModelData.Quantity ;
+                productModelData.PercentageDiscount = 0;
+
+                return;
+            }
+
+            productModelData.PriceWithDiscount = (productModelData.OriginalPrice - (productModelData.OriginalPrice * (promotionPoliceResult.Discount / 100))) * productModelData.Quantity;
+            productModelData.PercentageDiscount = promotionPoliceResult.Discount;
+        }
+
+        //
+        // Summary:
+        //     Method responsible for find PromotionPolice.
+        // 
+        // Parameters:
+        //   productModelData:
+        //     The productModelData param.
+        //
+        private PromotionPoliceResult FindPromotionPoliceResultByProductCategory(ProductModelData productModelData)
+        {
+            PromotionPoliceResult promotionPoliceResult = _promotions
+                    .Where(x => x.CategoryId == productModelData.CategoryId)
+                    ?.Select(x => x.Policies.OrderByDescending(c => c.Min)
+                                            .FirstOrDefault(y => y .Min <= productModelData.Quantity)).FirstOrDefault();
+
+            return promotionPoliceResult;
+        }
+
+        //
+        // Summary:
+        //     Method responsible for update text button buy.
+        // 
+        private void UpdateTextButtonBuy()
+        {
+            double total = ListData.Where(x => x.Quantity > 0).Sum(x => x.PriceWithDiscount);
+
+            string totalPtBR = total.ToString("C", CultureInfo.CreateSpecificCulture("pt-BR"));
+
+            TextButtonBuy = total > 0 ? $"Comprar ► {totalPtBR}" : "Comprar";
         }
     }
 }
