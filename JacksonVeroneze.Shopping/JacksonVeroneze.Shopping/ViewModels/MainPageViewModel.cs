@@ -1,5 +1,4 @@
-﻿using JacksonVeroneze.Shopping.Domain.Entities;
-using JacksonVeroneze.Shopping.Domain.Interface.Repositories;
+﻿using JacksonVeroneze.Shopping.Domain.Interface.Repositories;
 using JacksonVeroneze.Shopping.Domain.Interface.Services;
 using JacksonVeroneze.Shopping.Domain.Results;
 using JacksonVeroneze.Shopping.MvvmHelpers;
@@ -45,7 +44,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
         public DelegateCommand<ProductModelData> AddRemoveFavoriteCommand =>
             _addRemoveFavoriteCommand ?? (
                 _addRemoveFavoriteCommand = new DelegateCommand<ProductModelData>(AddRemoveFavoriteAsync));
-                
+
         public DelegateCommand<ProductModelData> DecrementQuantityCommand =>
             _decrementQuantityCommand ?? (
                 _decrementQuantityCommand = new DelegateCommand<ProductModelData>(DecrementQuantity));
@@ -67,11 +66,10 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
         public DelegateCommand BuyCommand =>
             _buyCommand ?? (
-                _buyCommand = new DelegateCommand(BuyAsync));
-
-        private IList<CategoryResult> _categories = new List<CategoryResult>();
-        private IList<ProductResult> _products = new List<ProductResult>();
-        private IList<PromotionResult> _promotions = new List<PromotionResult>();
+                _buyCommand = new DelegateCommand(BuyAsync,
+                () => ViewModelState.IsBusyNavigating is false)
+            )
+            .ObservesProperty(() => ViewModelState.IsBusyNavigating);
 
         private ObservableRangeCollection<ProductModelData> _listData = new ObservableRangeCollection<ProductModelData>();
         public ObservableRangeCollection<ProductModelData> ListData
@@ -86,6 +84,12 @@ namespace JacksonVeroneze.Shopping.ViewModels
             get => _textButtonBuy;
             set => SetProperty(ref _textButtonBuy, value);
         }
+
+        private IList<CategoryResult> _categories = new List<CategoryResult>();
+        private IList<ProductResult> _products = new List<ProductResult>();
+        private IList<PromotionResult> _promotions = new List<PromotionResult>();
+
+        private IList<ProductModelData> _cart = new List<ProductModelData>();
 
         //
         // Summary:
@@ -158,7 +162,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
             productModelData.IsFavorite = !productModelData.IsFavorite;
         }
 
-                //
+        //
         // Summary:
         //     Method responsible for performing the command action.
         // 
@@ -168,14 +172,21 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //
         public void DecrementQuantity(ProductModelData productModelData)
         {
-            if (productModelData.Quantity - 1 >= 0)
+            if (productModelData.Quantity - 1 < 0)
+                return;
+
+            if (productModelData.Quantity - 1 >= 0 && _cart.Any(x => x.Id == productModelData.Id))
             {
-                productModelData.Quantity--;
+                _cart.Remove(productModelData);
 
-                UpdateDataProduct(productModelData);
-
-                UpdateTextButtonBuy();
+                _crashlyticsService.TrackEvent("Removed product from cart", new Dictionary<string, string> { { "Product Name", productModelData.Name } });
             }
+
+            productModelData.Quantity--;
+
+            UpdateDataProduct(productModelData);
+
+            UpdateTextButtonBuy();
         }
 
         //
@@ -189,6 +200,13 @@ namespace JacksonVeroneze.Shopping.ViewModels
         public void IncrementQuantity(ProductModelData productModelData)
         {
             productModelData.Quantity++;
+
+            if (_cart.Any(x => x.Id == productModelData.Id) is false)
+            {
+                _cart.Add(productModelData);
+
+                _crashlyticsService.TrackEvent("Added product in cart", new Dictionary<string, string> { { "Product Name", productModelData.Name } });
+            }
 
             UpdateDataProduct(productModelData);
 
@@ -235,9 +253,23 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // 
         public async void BuyAsync()
         {
-            await _navigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(CartPage)}");
-        }
+            if (_cart.Any() is false)
+            {
+                await _pageDialogService.DisplayAlertAsync("Aviso", "Antes de proseguir adicione um produto.", "Ok");
 
+                return;
+            }
+
+            _crashlyticsService.TrackEvent("Clicked buy", new Dictionary<string, string> { { "Total Products", _cart.Count().ToString() } });
+
+            ViewModelState.IsBusyNavigating = true;
+
+            await _navigationService.NavigateAsync(nameof(CartPage), new NavigationParameters {
+                { "cart", _cart },
+            });
+
+            ViewModelState.IsBusyNavigating = false;
+        }
 
         //
         // Summary:
@@ -293,21 +325,30 @@ namespace JacksonVeroneze.Shopping.ViewModels
         {
             IList<ProductModelData> productModelDatas = new List<ProductModelData>();
 
-            foreach (ProductResult x in productResults)
+            foreach (ProductResult product in productResults)
             {
                 //Favorite favorite = await _favoriteRepository.FindByProductId(x.Id);
 
-                productModelDatas.Add(new ProductModelData()
+                ProductModelData productModelData = _cart.FirstOrDefault(x => x.Id == product.Id);
+
+                if (productModelData != null)
                 {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = x.Description,
-                    Photo = x.Photo,
-                    OriginalPrice = x.Price,
-                    PriceWithDiscount = x.Price,
-                    CategoryId = x.CategoryId,
-                    IsFavorite = false
-                });
+                    productModelDatas.Add(productModelData);
+                }
+                else
+                {
+                    productModelDatas.Add(new ProductModelData()
+                    {
+                        Id = product.Id,
+                        Name = product.Name,
+                        Description = product.Description,
+                        Photo = product.Photo,
+                        OriginalPrice = product.Price,
+                        PriceWithDiscount = product.Price,
+                        CategoryId = product.CategoryId,
+                        IsFavorite = false
+                    });
+                }
             }
 
             return productModelDatas;
@@ -323,7 +364,8 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //
         private void UpdateDataProduct(ProductModelData productModelData)
         {
-            if (productModelData.CategoryId is null){
+            if (productModelData.CategoryId is null)
+            {
                 productModelData.PriceWithDiscount = productModelData.OriginalPrice * productModelData.Quantity;
                 return;
             }
@@ -340,7 +382,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
             if (promotionPoliceResult is null)
             {
-                productModelData.PriceWithDiscount = productModelData.OriginalPrice * productModelData.Quantity ;
+                productModelData.PriceWithDiscount = productModelData.OriginalPrice * productModelData.Quantity;
                 productModelData.PercentageDiscount = 0;
 
                 return;
@@ -363,7 +405,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
             PromotionPoliceResult promotionPoliceResult = _promotions
                     .Where(x => x.CategoryId == productModelData.CategoryId)
                     ?.Select(x => x.Policies.OrderByDescending(c => c.Min)
-                            .FirstOrDefault(y => y .Min <= productModelData.Quantity))
+                            .FirstOrDefault(y => y.Min <= productModelData.Quantity))
                             .FirstOrDefault();
 
             return promotionPoliceResult;
@@ -375,7 +417,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // 
         private void UpdateTextButtonBuy()
         {
-            double total = ListData.Where(x => x.Quantity > 0).Sum(x => x.PriceWithDiscount);
+            double total = _cart.Where(x => x.Quantity > 0).Sum(x => x.PriceWithDiscount);
 
             string totalPtBR = total.ToString("C", CultureInfo.CreateSpecificCulture("pt-BR"));
 

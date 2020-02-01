@@ -1,9 +1,121 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:controls="clr-namespace:JacksonVeroneze.Shopping.Controls"
+             xmlns:converters="clr-namespace:JacksonVeroneze.Shopping.Converters"
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="JacksonVeroneze.Shopping.Views.CartPage"
-             Title="Carrinho">
-  
+             x:Name="Carrinho"
+             Title="Catálogo">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <converters:ValueGreaterThanZeroConverter x:Key="ValueGreaterThanZeroConverter" />
+            <converters:ValueToBrlConverter x:Key="ValueToBrlConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <controls:ActivityIndicatorControl Title="Carregando produtos." IsVisible="{Binding ViewModelState.IsLoading}" VerticalOptions="CenterAndExpand"></controls:ActivityIndicatorControl>
+            <controls:HasErrorControl Title="Erro ao carregar os dados." IsVisible="{Binding ViewModelState.HasError}" VerticalOptions="CenterAndExpand"></controls:HasErrorControl>
+
+            <Grid IsVisible="{Binding ViewModelState.HasData}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <ListView
+                ItemsSource="{Binding ListData, Mode=OneWay}"
+                HasUnevenRows="True"
+                CachingStrategy="RecycleElement"
+                Footer=""
+                 Grid.Row="0" Grid.Column="0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame Padding="10,20,10,20" Margin="10,7,10,7">
+                                    <Grid ColumnSpacing="10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <ffimageloading:CachedImage Source="{Binding Photo}" CacheDuration= "50" RetryCount= "3" RetryDelay= "600" DownsampleToViewSize = "true" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" />
+
+                                        <Label Text="{Binding Name}" FontSize="Subtitle" FontAttributes="Bold" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" />
+
+                                        <Label Grid.Row="1" Grid.Column="1">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Quantity}" FontSize="Subtitle" FontAttributes="Bold" />
+                                                    <Span Text=" UN" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+
+                                        <StackLayout BackgroundColor="Purple" Orientation="Horizontal" HorizontalOptions="End" IsVisible="{Binding PercentageDiscount, Converter={StaticResource ValueGreaterThanZeroConverter}}" Padding="3" Grid.Row="1" Grid.Column="2">
+                                            <Image Source="icon_arrow_downward" WidthRequest="15" HeightRequest="15" HorizontalOptions="Start" />
+                                            <Label Text="{Binding PercentageDiscount, StringFormat='{0}%'}" TextColor="White" />
+                                        </StackLayout>
+
+                                            <Label Text="{Binding PriceWithDiscount, Converter={StaticResource ValueToBrlConverter}}" Padding="3" BackgroundColor="LightGray" FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" Grid.Row="1" Grid.Column="3" />
+                                    </Grid>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+
+                <Grid ColumnSpacing="10" Margin="10" Grid.Row="1" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+
+                    <Label HorizontalTextAlignment="End" Grid.Row="0" Grid.Column="1">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Quantity}" FontSize="Subtitle" FontAttributes="Bold" />
+                                <Span Text=" UN" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+
+                    <BoxView HeightRequest="1" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
+
+                    <Label Text="Total" FontSize="Large" FontAttributes="Bold" Grid.Row="2" Grid.Column="0" />
+                    <Label Text="{Binding Total, Converter={StaticResource ValueToBrlConverter}}" HorizontalTextAlignment="End" FontSize="Large" FontAttributes="Bold" Grid.Row="2" Grid.Column="1" />
+
+                </Grid>
+
+                <Button Text="Finalizar a Compra" Command="{Binding BuyCommand}" FontAttributes="Bold" BackgroundColor="#70378D" TextColor="White" HorizontalOptions="FillAndExpand" HeightRequest="45" VerticalOptions="Center" Grid.Row="2" Grid.Column="0" />
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>
