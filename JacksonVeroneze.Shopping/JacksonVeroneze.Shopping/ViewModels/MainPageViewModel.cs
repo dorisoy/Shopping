@@ -24,6 +24,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
     public class MainPageViewModel : ViewModelBase
     {
         private readonly IPageDialogService _pageDialogService;
+        //
         private readonly ICrashlyticsService _crashlyticsService;
         //
         private readonly ICategoryService _categoryService;
@@ -33,17 +34,18 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //
         private readonly IFavoriteRepository _favoriteRepository;
 
-        private DelegateCommand _buyCommand;
-        private DelegateCommand _filterByCategoryCommand;
-        private DelegateCommand _refreshCommand;
+        private DelegateCommand<ProductModelData> _addRemoveFavoriteCommand;
         private DelegateCommand<ProductModelData> _decrementQuantityCommand;
         private DelegateCommand<ProductModelData> _incrementQuantityCommand;
-        private DelegateCommand<ProductModelData> _addRemoveFavoriteCommand;
 
-        public DelegateCommand BuyCommand =>
-            _buyCommand ?? (
-                _buyCommand = new DelegateCommand(BuyAsync));
+        private DelegateCommand _filterByCategoryCommand;
+        private DelegateCommand _refreshCommand;
+        private DelegateCommand _buyCommand;
 
+        public DelegateCommand<ProductModelData> AddRemoveFavoriteCommand =>
+            _addRemoveFavoriteCommand ?? (
+                _addRemoveFavoriteCommand = new DelegateCommand<ProductModelData>(AddRemoveFavoriteAsync));
+                
         public DelegateCommand<ProductModelData> DecrementQuantityCommand =>
             _decrementQuantityCommand ?? (
                 _decrementQuantityCommand = new DelegateCommand<ProductModelData>(DecrementQuantity));
@@ -51,10 +53,6 @@ namespace JacksonVeroneze.Shopping.ViewModels
         public DelegateCommand<ProductModelData> IncrementQuantityCommand =>
             _incrementQuantityCommand ?? (
                 _incrementQuantityCommand = new DelegateCommand<ProductModelData>(IncrementQuantity));
-
-        public DelegateCommand<ProductModelData> AddRemoveFavoriteCommand =>
-            _addRemoveFavoriteCommand ?? (
-                _addRemoveFavoriteCommand = new DelegateCommand<ProductModelData>(AddRemoveFavoriteAsync));
 
         public DelegateCommand FilterByCategoryCommand =>
             _filterByCategoryCommand ?? (
@@ -66,6 +64,10 @@ namespace JacksonVeroneze.Shopping.ViewModels
                 () => ViewModelState.IsRefresh is false)
             )
             .ObservesProperty(() => ViewModelState.IsRefresh);
+
+        public DelegateCommand BuyCommand =>
+            _buyCommand ?? (
+                _buyCommand = new DelegateCommand(BuyAsync));
 
         private IList<CategoryResult> _categories = new List<CategoryResult>();
         private IList<ProductResult> _products = new List<ProductResult>();
@@ -138,46 +140,25 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // Summary:
         //     Method responsible for performing the command action.
         // 
-        private async void FilterByCategoryAsync()
+        // Parameters:
+        //   productModelData:
+        //     The productModelData param.
+        //
+        public async void AddRemoveFavoriteAsync(ProductModelData productModelData)
         {
-            IList<IActionSheetButton> buttons = new List<IActionSheetButton>();
+            //Favorite favorite = await _favoriteRepository.FindByProductId(productModelData.Id);
 
-            Action<CategoryResult> showProductsBycategoryAction = async (i)
-                => ListData.ReplaceRange(await FactoryProductModelDataAsync(_products.Where(x => x.CategoryId == i.Id).ToList()));
+            //if (favorite != null && productModelData.IsFavorite is true)
+            //    await _favoriteRepository.RemoveAsync(favorite);
 
-            Action showAllProducts = async () => ListData.ReplaceRange(await FactoryProductModelDataAsync(_products));
+            //favorite = new Favorite(productModelData.Id);
 
-            buttons.Add(ActionSheetButton.CreateButton("Todas as categorias", showAllProducts));
+            //await _favoriteService.AddAsync(favorite);
 
-            foreach (CategoryResult category in _categories)
-                buttons.Add(ActionSheetButton.CreateButton(category.Name, showProductsBycategoryAction, category));
-
-            await _pageDialogService.DisplayActionSheetAsync("Escolha a categoria para filtrar.", buttons.ToArray());
+            productModelData.IsFavorite = !productModelData.IsFavorite;
         }
 
-        //
-        // Summary:
-        //     Method responsible for performing the command action.
-        // 
-        public async void RefreshDataAsync()
-        {
-            ViewModelState.IsRefresh = true;
-
-            await LoadDataAsync();
-
-            ViewModelState.IsRefresh = false;
-        }
-
-        //
-        // Summary:
-        //     Method responsible for performing the command action.
-        // 
-        public async void BuyAsync()
-        {
-            await _navigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(CartPage)}");
-        }
-
-        //
+                //
         // Summary:
         //     Method responsible for performing the command action.
         // 
@@ -218,23 +199,45 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // Summary:
         //     Method responsible for performing the command action.
         // 
-        // Parameters:
-        //   productModelData:
-        //     The productModelData param.
-        //
-        public async void AddRemoveFavoriteAsync(ProductModelData productModelData)
+        private async void FilterByCategoryAsync()
         {
-            //Favorite favorite = await _favoriteRepository.FindByProductId(productModelData.Id);
+            IList<IActionSheetButton> buttons = new List<IActionSheetButton>();
 
-            //if (favorite != null && productModelData.IsFavorite is true)
-            //    await _favoriteRepository.RemoveAsync(favorite);
+            Action<CategoryResult> showProductsBycategoryAction = async (i)
+                => ListData.ReplaceRange(await FactoryProductModelDataAsync(_products.Where(x => x.CategoryId == i.Id).ToList()));
 
-            //favorite = new Favorite(productModelData.Id);
+            Action showAllProducts = async () => ListData.ReplaceRange(await FactoryProductModelDataAsync(_products));
 
-            //await _favoriteService.AddAsync(favorite);
+            buttons.Add(ActionSheetButton.CreateButton("Todas as categorias", showAllProducts));
 
-            productModelData.IsFavorite = !productModelData.IsFavorite;
+            foreach (CategoryResult category in _categories)
+                buttons.Add(ActionSheetButton.CreateButton(category.Name, showProductsBycategoryAction, category));
+
+            await _pageDialogService.DisplayActionSheetAsync("Escolha a categoria para filtrar.", buttons.ToArray());
         }
+
+        //
+        // Summary:
+        //     Method responsible for performing the command action.
+        // 
+        public async void RefreshDataAsync()
+        {
+            ViewModelState.IsRefresh = true;
+
+            await LoadDataAsync();
+
+            ViewModelState.IsRefresh = false;
+        }
+
+        //
+        // Summary:
+        //     Method responsible for performing the command action.
+        // 
+        public async void BuyAsync()
+        {
+            await _navigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(CartPage)}");
+        }
+
 
         //
         // Summary:
@@ -320,8 +323,10 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //
         private void UpdateDataProduct(ProductModelData productModelData)
         {
-            if (productModelData.CategoryId is null)
+            if (productModelData.CategoryId is null){
+                productModelData.PriceWithDiscount = productModelData.OriginalPrice * productModelData.Quantity;
                 return;
+            }
 
             if (productModelData.Quantity == 0)
             {
@@ -358,7 +363,8 @@ namespace JacksonVeroneze.Shopping.ViewModels
             PromotionPoliceResult promotionPoliceResult = _promotions
                     .Where(x => x.CategoryId == productModelData.CategoryId)
                     ?.Select(x => x.Policies.OrderByDescending(c => c.Min)
-                                            .FirstOrDefault(y => y .Min <= productModelData.Quantity)).FirstOrDefault();
+                            .FirstOrDefault(y => y .Min <= productModelData.Quantity))
+                            .FirstOrDefault();
 
             return promotionPoliceResult;
         }
