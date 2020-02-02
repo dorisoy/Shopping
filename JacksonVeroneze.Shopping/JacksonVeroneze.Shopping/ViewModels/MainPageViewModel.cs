@@ -3,6 +3,7 @@ using JacksonVeroneze.Shopping.Domain.Interface.Services;
 using JacksonVeroneze.Shopping.Domain.Results;
 using JacksonVeroneze.Shopping.MvvmHelpers;
 using JacksonVeroneze.Shopping.Services.Interfaces;
+using JacksonVeroneze.Shopping.Util;
 using JacksonVeroneze.Shopping.Views;
 using Prism.Commands;
 using Prism.Navigation;
@@ -169,18 +170,27 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //   productModelData:
         //     The productModelData param.
         //
-        public async void AddRemoveFavoriteAsync(ProductModelData productModelData)
+        public void AddRemoveFavoriteAsync(ProductModelData productModelData)
         {
-            //Favorite favorite = await _favoriteRepository.FindByProductId(productModelData.Id);
+            try
+            {
+                //Favorite favorite = await _favoriteRepository.FindByProductId(productModelData.Id);
 
-            //if (favorite != null && productModelData.IsFavorite is true)
-            //    await _favoriteRepository.RemoveAsync(favorite);
+                //if (favorite != null && productModelData.IsFavorite is true)
+                //    await _favoriteRepository.RemoveAsync(favorite);
 
-            //favorite = new Favorite(productModelData.Id);
+                //favorite = new Favorite(productModelData.Id);
 
-            //await _favoriteService.AddAsync(favorite);
+                //await _favoriteService.AddAsync(favorite);
 
-            productModelData.IsFavorite = !productModelData.IsFavorite;
+                productModelData.IsFavorite = !productModelData.IsFavorite;
+            }
+            catch (Exception e)
+            {
+                ViewModelState.HasError = true;
+
+                _crashlyticsService.TrackError(e);
+            }
         }
 
         //
@@ -202,7 +212,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
                 {
                     _cart.Remove(productModelData);
 
-                    _crashlyticsService.TrackEvent("Removed product from cart", new Dictionary<string, string> { { "Product Name", productModelData.Name } });
+                    _crashlyticsService.TrackEvent(ApplicationEvents.REMOVED_PRODUCT_FROM_CART, new Dictionary<string, string> { { "Product Name", productModelData.Name } });
                 }
 
                 productModelData.Quantity--;
@@ -216,7 +226,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
             catch (Exception e)
             {
                 ViewModelState.HasError = true;
-             
+
                 _crashlyticsService.TrackError(e);
             }
         }
@@ -239,7 +249,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
                 {
                     _cart.Add(productModelData);
 
-                    _crashlyticsService.TrackEvent("Added product in cart", new Dictionary<string, string> { { "Product Name", productModelData.Name } });
+                    _crashlyticsService.TrackEvent(ApplicationEvents.ADDED_PRODUCT_IN_CART, new Dictionary<string, string> { { "Product Name", productModelData.Name } });
                 }
 
                 UpdateDataProduct(productModelData);
@@ -251,7 +261,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
             catch (Exception e)
             {
                 ViewModelState.HasError = true;
-             
+
                 _crashlyticsService.TrackError(e);
             }
         }
@@ -275,14 +285,14 @@ namespace JacksonVeroneze.Shopping.ViewModels
             {
                 Interlocked.Exchange(ref _throttleCts, new CancellationTokenSource()).Cancel();
 
-                await Task.Delay(TimeSpan.FromMilliseconds(500), this._throttleCts.Token)
-                      .ContinueWith(async task =>
+                await Task.Delay(TimeSpan.FromMilliseconds(500), _throttleCts.Token)
+                      .ContinueWith(task =>
                       {
                           _currentFilterCategory = null;
 
                           List<ProductResult> listDataSearch = _products.Where(x => x.Name.ToUpperInvariant().Contains(value.ToUpperInvariant())).ToList();
 
-                          ListData.ReplaceRange(await FactoryProductModelDataAsync(listDataSearch));
+                          ListData.ReplaceRange(FactoryProductModelDataAsync(listDataSearch));
                       },
                     CancellationToken.None,
                     TaskContinuationOptions.OnlyOnRanToCompletion,
@@ -314,18 +324,20 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
                 IList<IActionSheetButton> buttons = new List<IActionSheetButton>();
 
-                Action<CategoryResult> showProductsBycategoryAction = async (i) =>
+                Action<CategoryResult> showProductsBycategoryAction = (i) =>
                 {
                     _currentFilterCategory = i.Id;
 
-                    ListData.ReplaceRange(await FactoryProductModelDataAsync(_products.Where(x => x.CategoryId == i.Id).ToList()));
+                    ListData.ReplaceRange(FactoryProductModelDataAsync(_products.Where(x => x.CategoryId == i.Id).ToList()));
+
+                    _crashlyticsService.TrackEvent(ApplicationEvents.FILTER_BY_CATEGORY, new Dictionary<string, string> { { "Category Name", i.Name } });
                 };
 
-                Action showAllProducts = async () =>
+                Action showAllProducts = () =>
                 {
                     _currentFilterCategory = null;
 
-                    ListData.ReplaceRange(await FactoryProductModelDataAsync(_products));
+                    ListData.ReplaceRange(FactoryProductModelDataAsync(_products));
                 };
 
                 buttons.Add(ActionSheetButton.CreateButton("Todas as categorias", showAllProducts));
@@ -349,18 +361,27 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // 
         public async void RefreshDataAsync()
         {
-            ViewModelState.IsRefresh = true;
-
-            if (_currentFilterCategory is null)
+            try
             {
-                ListData.ReplaceRange(await FactoryProductModelDataAsync(_products));
-            }
-            else
-            {
-                ListData.ReplaceRange(await FactoryProductModelDataAsync(_products.Where(x => x.CategoryId == _currentFilterCategory).ToList()));
-            }
+                ViewModelState.IsRefresh = true;
 
-            ViewModelState.IsRefresh = false;
+                if (_currentFilterCategory is null)
+                {
+                    ListData.ReplaceRange(FactoryProductModelDataAsync(_products));
+                }
+                else
+                {
+                    ListData.ReplaceRange(FactoryProductModelDataAsync(_products.Where(x => x.CategoryId == _currentFilterCategory).ToList()));
+                }
+
+                ViewModelState.IsRefresh = false;
+            }
+            catch (Exception e)
+            {
+                ViewModelState.HasError = true;
+
+                _crashlyticsService.TrackError(e);
+            }
         }
 
         //
@@ -376,7 +397,11 @@ namespace JacksonVeroneze.Shopping.ViewModels
                 return;
             }
 
-            _crashlyticsService.TrackEvent("Clicked buy", new Dictionary<string, string> { { "Total Products", _cart.Count().ToString() } });
+            _crashlyticsService.TrackEvent(ApplicationEvents.BUY,
+                    new Dictionary<string, string>() {
+                        { "Quantity", _cart.Where(x => x.Quantity > 0).ToString() },
+                        { "Total", _cart.Where(x => x.Quantity > 0).Sum(x => x.Total).ToString() }
+                    });
 
             ViewModelState.IsBusyNavigating = true;
 
@@ -401,6 +426,9 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
             await LoadDataAsync();
 
+            _crashlyticsService.TrackEvent(ApplicationEvents.OPEN_SCREAM,
+                    new Dictionary<string, string>() { { "Page", nameof(MainPage) } });
+
             ViewModelState.IsLoading = false;
 
             //_crashlyticsService.TrackEventAsync(ApplicationEvents.OPEN_SCREAM,
@@ -419,13 +447,13 @@ namespace JacksonVeroneze.Shopping.ViewModels
                 _products = await _productService.FindAllAsync();
                 _promotions = await _promotionService.FindAllAsync();
 
-                ListData.ReplaceRange(await FactoryProductModelDataAsync(_products));
+                ListData.ReplaceRange(FactoryProductModelDataAsync(_products));
             }
             catch (Exception e)
             {
-                _crashlyticsService.TrackError(e);
-
                 ViewModelState.HasError = true;
+
+                _crashlyticsService.TrackError(e);
             }
         }
 
@@ -437,34 +465,44 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //   productResults:
         //     The productResults param.
         //
-        private async Task<IList<ProductModelData>> FactoryProductModelDataAsync(IList<ProductResult> productResults)
+        private IList<ProductModelData> FactoryProductModelDataAsync(IList<ProductResult> productResults)
         {
             IList<ProductModelData> productModelDatas = new List<ProductModelData>();
 
-            foreach (ProductResult product in productResults)
+            try
             {
-                //Favorite favorite = await _favoriteRepository.FindByProductId(x.Id);
 
-                ProductModelData productModelData = _cart.FirstOrDefault(x => x.Id == product.Id);
+                foreach (ProductResult product in productResults)
+                {
+                    //Favorite favorite = await _favoriteRepository.FindByProductId(x.Id);
 
-                if (productModelData != null)
-                {
-                    productModelDatas.Add(productModelData);
-                }
-                else
-                {
-                    productModelDatas.Add(new ProductModelData()
+                    ProductModelData productModelData = _cart.FirstOrDefault(x => x.Id == product.Id);
+
+                    if (productModelData != null)
                     {
-                        Id = product.Id,
-                        Name = product.Name,
-                        Description = product.Description,
-                        Photo = product.Photo,
-                        OriginalPrice = product.Price,
-                        FinalPrice = product.Price,
-                        CategoryId = product.CategoryId,
-                        IsFavorite = false
-                    });
+                        productModelDatas.Add(productModelData);
+                    }
+                    else
+                    {
+                        productModelDatas.Add(new ProductModelData()
+                        {
+                            Id = product.Id,
+                            Name = product.Name,
+                            Description = product.Description,
+                            Photo = product.Photo,
+                            OriginalPrice = product.Price,
+                            FinalPrice = product.Price,
+                            CategoryId = product.CategoryId,
+                            IsFavorite = false
+                        });
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                ViewModelState.HasError = true;
+
+                _crashlyticsService.TrackError(e);
             }
 
             return productModelDatas;

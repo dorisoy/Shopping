@@ -3,6 +3,7 @@ using JacksonVeroneze.Shopping.Domain.Interface.Services;
 using JacksonVeroneze.Shopping.Domain.Results;
 using JacksonVeroneze.Shopping.MvvmHelpers;
 using JacksonVeroneze.Shopping.Services.Interfaces;
+using JacksonVeroneze.Shopping.Util;
 using JacksonVeroneze.Shopping.Views;
 using Prism.Commands;
 using Prism.Navigation;
@@ -84,10 +85,10 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // Summary:
         //     Method responsible for performing the command action.
         // 
-        public async void BuyAsync()
+        public void BuyAsync()
         {
-            //_crashlyticsService.TrackEvent("Clicked buy", new Dictionary<string, string> { { "Total Products", _cart.Count().ToString() } });
-
+            _crashlyticsService.TrackEvent(ApplicationEvents.CHECKOUT,
+                    new Dictionary<string, string>() { { "Value", Total.ToString() } });
         }
 
         //
@@ -98,7 +99,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //   parameters:
         //     The parameters param.
         //
-        public override async void Initialize(INavigationParameters parameters)
+        public override void Initialize(INavigationParameters parameters)
         {
             ViewModelState.IsLoading = true;
 
@@ -109,32 +110,10 @@ namespace JacksonVeroneze.Shopping.ViewModels
             Quantity = ListData.Sum(x => x.Quantity);
             Total = ListData.Sum(x => x.Total);
 
-            await LoadDataAsync();
+            _crashlyticsService.TrackEvent(ApplicationEvents.OPEN_SCREAM,
+                    new Dictionary<string, string>() { { "Page", nameof(CartPage) } });
 
             ViewModelState.IsLoading = false;
-
-            //_crashlyticsService.TrackEventAsync(ApplicationEvents.OPEN_SCREAM,
-            //    new Dictionary<string, string>() { { "Page", nameof(AuthenticatePage) } });
-        }
-
-        //
-        // Summary:
-        //     Method responsible for executing when the screen receives navigation.
-        // 
-        public async Task LoadDataAsync()
-        {
-            try
-            {
-
-
-                //ListData.ReplaceRange(await FactoryProductModelDataAsync(_products));
-            }
-            catch (Exception e)
-            {
-                _crashlyticsService.TrackError(e);
-
-                ViewModelState.HasError = true;
-            }
         }
     }
 }
