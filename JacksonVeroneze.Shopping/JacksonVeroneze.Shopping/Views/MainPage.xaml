@@ -19,7 +19,7 @@
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="icon_filter"  Command="{Binding FilterByCategoryCommand}"></ToolbarItem>
+        <ToolbarItem IconImageSource="icon_filter"  Command="{Binding FilterByCategoryCommand}" IsEnabled="{Binding ViewModelState.HasError, Converter={StaticResource InverseBooleanConverter}}"></ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
@@ -51,7 +51,7 @@
                     x:Name="SearchBar"
                     SearchCommand="{Binding SearchCommand}" 
                     SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"
-                    IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
+                    IsEnabled="{Binding ViewModelState.HasError, Converter={StaticResource InverseBooleanConverter}}"
                     Placeholder="Busca por nome do produto."
                     HorizontalOptions="FillAndExpand"
                     BackgroundColor="White"
@@ -113,7 +113,7 @@
                                             </Label.FormattedText>
                                         </Label>
 
-                                        <Label Text="{Binding PriceWithDiscount, Converter={StaticResource ValueToBrlConverter}}" FontSize="Subtitle" FontAttributes="Bold" VerticalTextAlignment="Center" Grid.Row="2" Grid.Column="1" />
+                                        <Label Text="{Binding FinalPrice, Converter={StaticResource ValueToBrlConverter}}" FontSize="Subtitle" FontAttributes="Bold" VerticalTextAlignment="Center" Grid.Row="2" Grid.Column="1" />
                                         <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
                                             <ImageButton Source="icon_remove" Command="{Binding BindingContext.DecrementQuantityCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand" BackgroundColor="#00CD57" HeightRequest="35" />
                                             <ImageButton Source="icon_add" Command="{Binding BindingContext.IncrementQuantityCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand" BackgroundColor="#00CD57" HeightRequest="35" />

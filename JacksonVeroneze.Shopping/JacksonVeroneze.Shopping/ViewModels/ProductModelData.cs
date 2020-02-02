@@ -20,11 +20,11 @@ namespace JacksonVeroneze.Shopping.ViewModels
             set => SetProperty(ref _originalPrice, value);
         }
 
-        private double _priceWithDiscount = 0;
-        public double PriceWithDiscount
+        private double _finalPrice = 0;
+        public double FinalPrice
         {
-            get => _priceWithDiscount;
-            set => SetProperty(ref _priceWithDiscount, value);
+            get => _finalPrice;
+            set => SetProperty(ref _finalPrice, value);
         }
 
         private double _percentageDiscount = 0;

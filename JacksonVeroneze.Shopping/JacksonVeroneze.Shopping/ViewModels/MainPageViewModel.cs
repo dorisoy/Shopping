@@ -67,9 +67,10 @@ namespace JacksonVeroneze.Shopping.ViewModels
         public DelegateCommand BuyCommand =>
             _buyCommand ?? (
                 _buyCommand = new DelegateCommand(BuyAsync,
-                () => ViewModelState.IsBusyNavigating is false)
+                () => ViewModelState.IsBusyNavigating is false && HasItensToBuy)
             )
-            .ObservesProperty(() => ViewModelState.IsBusyNavigating);
+            .ObservesProperty(() => ViewModelState.IsBusyNavigating)
+            .ObservesProperty(() => HasItensToBuy);
 
         private ObservableRangeCollection<ProductModelData> _listData = new ObservableRangeCollection<ProductModelData>();
         public ObservableRangeCollection<ProductModelData> ListData
@@ -84,6 +85,15 @@ namespace JacksonVeroneze.Shopping.ViewModels
             get => _textButtonBuy;
             set => SetProperty(ref _textButtonBuy, value);
         }
+
+        private bool _hasItensToBuy = false;
+        public bool HasItensToBuy
+        {
+            get => _hasItensToBuy;
+            set => SetProperty(ref _hasItensToBuy, value);
+        }
+
+        private readonly Action<MainPageViewModel> VerifyItensToBuy = (vm) => vm.HasItensToBuy = vm._cart.Any();
 
         private IList<CategoryResult> _categories = new List<CategoryResult>();
         private IList<ProductResult> _products = new List<ProductResult>();
@@ -187,6 +197,8 @@ namespace JacksonVeroneze.Shopping.ViewModels
             UpdateDataProduct(productModelData);
 
             UpdateTextButtonBuy();
+
+            VerifyItensToBuy(this);
         }
 
         //
@@ -211,6 +223,8 @@ namespace JacksonVeroneze.Shopping.ViewModels
             UpdateDataProduct(productModelData);
 
             UpdateTextButtonBuy();
+
+            VerifyItensToBuy(this);
         }
 
         //
@@ -344,7 +358,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
                         Description = product.Description,
                         Photo = product.Photo,
                         OriginalPrice = product.Price,
-                        PriceWithDiscount = product.Price,
+                        FinalPrice = product.Price,
                         CategoryId = product.CategoryId,
                         IsFavorite = false
                     });
@@ -366,13 +380,13 @@ namespace JacksonVeroneze.Shopping.ViewModels
         {
             if (productModelData.CategoryId is null)
             {
-                productModelData.PriceWithDiscount = productModelData.OriginalPrice * productModelData.Quantity;
+                productModelData.FinalPrice = productModelData.OriginalPrice * productModelData.Quantity;
                 return;
             }
 
             if (productModelData.Quantity == 0)
             {
-                productModelData.PriceWithDiscount = productModelData.OriginalPrice;
+                productModelData.FinalPrice = productModelData.OriginalPrice;
                 productModelData.PercentageDiscount = 0;
 
                 return;
@@ -382,13 +396,13 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
             if (promotionPoliceResult is null)
             {
-                productModelData.PriceWithDiscount = productModelData.OriginalPrice * productModelData.Quantity;
+                productModelData.FinalPrice = productModelData.OriginalPrice * productModelData.Quantity;
                 productModelData.PercentageDiscount = 0;
 
                 return;
             }
 
-            productModelData.PriceWithDiscount = (productModelData.OriginalPrice - (productModelData.OriginalPrice * (promotionPoliceResult.Discount / 100))) * productModelData.Quantity;
+            productModelData.FinalPrice = (productModelData.OriginalPrice - (productModelData.OriginalPrice * (promotionPoliceResult.Discount / 100))) * productModelData.Quantity;
             productModelData.PercentageDiscount = promotionPoliceResult.Discount;
         }
 
@@ -417,7 +431,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // 
         private void UpdateTextButtonBuy()
         {
-            double total = _cart.Where(x => x.Quantity > 0).Sum(x => x.PriceWithDiscount);
+            double total = _cart.Where(x => x.Quantity > 0).Sum(x => x.FinalPrice);
 
             string totalPtBR = total.ToString("C", CultureInfo.CreateSpecificCulture("pt-BR"));
 

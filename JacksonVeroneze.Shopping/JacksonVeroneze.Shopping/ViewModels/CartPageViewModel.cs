@@ -107,7 +107,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
             ListData.ReplaceRange(productModels);
 
             Quantity = ListData.Sum(x => x.Quantity);
-            Total = ListData.Sum(x => x.PriceWithDiscount);
+            Total = ListData.Sum(x => x.FinalPrice);
 
             await LoadDataAsync();
 
