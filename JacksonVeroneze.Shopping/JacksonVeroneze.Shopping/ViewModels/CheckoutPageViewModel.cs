@@ -97,7 +97,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //   parameters:
         //     The parameters param.
         //
-        public override async void Initialize(INavigationParameters parameters)
+        public override void Initialize(INavigationParameters parameters)
         {
             ViewModelState.IsLoading = true;
 

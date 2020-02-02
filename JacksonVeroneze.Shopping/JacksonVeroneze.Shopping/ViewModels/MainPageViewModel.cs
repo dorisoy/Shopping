@@ -67,7 +67,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
         public DelegateCommand RefreshCommand =>
             _refreshCommand ?? (
-                _refreshCommand = new DelegateCommand(RefreshDataAsync,
+                _refreshCommand = new DelegateCommand(RefreshData,
                 () => ViewModelState.IsRefresh is false)
             )
             .ObservesProperty(() => ViewModelState.IsRefresh);
@@ -359,7 +359,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // Summary:
         //     Method responsible for performing the command action.
         // 
-        public async void RefreshDataAsync()
+        public void RefreshData()
         {
             try
             {
