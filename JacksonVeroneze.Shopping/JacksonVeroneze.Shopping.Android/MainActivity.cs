@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using Acr.UserDialogs;
+using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using JacksonVeroneze.Shopping.Common;
@@ -21,6 +22,8 @@ namespace JacksonVeroneze.Shopping.Droid
             Xamarin.Forms.Forms.Init(this, bundle);
 
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
+
+            UserDialogs.Init(this);
 
             LoadApplication(new App(new AndroidInitializer()));
         }

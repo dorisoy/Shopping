@@ -1,10 +1,12 @@
-﻿using JacksonVeroneze.Shopping.Services.Interfaces;
+﻿using Acr.UserDialogs;
+using JacksonVeroneze.Shopping.Services.Interfaces;
 using JacksonVeroneze.Shopping.Util;
 using JacksonVeroneze.Shopping.Views;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace JacksonVeroneze.Shopping.ViewModels
 {
@@ -73,7 +75,11 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // 
         public async void BuyAsync()
         {
+            UserDialogs.Instance.ShowLoading("Aguarde, efetuando pagamento.", MaskType.Black);
+            await Task.Delay(3000);
+            UserDialogs.Instance.HideLoading();
 
+            await _pageDialogService.DisplayAlertAsync("Aviso", "Pagamento efetuado com sucesso.", "Ok");
         }
 
         //
