@@ -91,34 +91,34 @@
             <Grid Margin="10" Grid.Row="1" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20"/>
-                    <RowDefinition Height="20"/>
-                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="70"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Text="Dados do cartão" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" FontSize="Large"/>
-                <Label Text="Insira as informações do seu cartão de crédito/débito" FontSize="Medium" Grid.Row="1" Grid.Column="0"/>
+                <Label Text="Dados do cartão" FontAttributes="Bold" FontSize="Large" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" />
+                <Label Text="Insira as informações do seu cartão de crédito/débito" FontSize="Medium" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
 
-                <Entry Text="{Binding CardNumber, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Número do cartão" Grid.Row="2" Grid.Column="0">
+                <Entry Text="{Binding CardNumber}" Keyboard="Numeric" Placeholder="Número do cartão" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                     <Entry.Behaviors>
                         <behavioursFormatters:MaskedBehavior Mask="XXXX XXXX XXXX XXXX"/>
                         <behavioursValidators:MaxLengthValidatorBehavior MaxLength="19"/>
                     </Entry.Behaviors>
                 </Entry>
 
-                <Entry Text="{Binding Expiration, Mode=TwoWay}" Keyboard="Numeric" Placeholder="MM/YY" Grid.Row="3" Grid.Column="0">
+                <Entry Text="{Binding Expiration}" Keyboard="Numeric" Placeholder="MM/YY" Grid.Row="3" Grid.Column="0">
                     <Entry.Behaviors>
                         <behavioursFormatters:MaskedBehavior Mask="XX/XX"/>
                         <behavioursValidators:MaxLengthValidatorBehavior MaxLength="19"/>
                     </Entry.Behaviors>
                 </Entry>
 
-                <Entry Text="{Binding Cvv, Mode=TwoWay}" Keyboard="Numeric" Placeholder="CVC" Grid.Row="4" Grid.Column="0">
+                <Entry Text="{Binding Cvv}" Keyboard="Numeric" Placeholder="CVC" HorizontalTextAlignment="Center" Grid.Row="3" Grid.Column="1">
                     <Entry.Behaviors>
                         <behavioursFormatters:MaskedBehavior Mask="XXX" />
                         <behavioursValidators:MaxLengthValidatorBehavior MaxLength="3"/>
