@@ -7,8 +7,8 @@
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="JacksonVeroneze.Shopping.Views.CartPage"
-             x:Name="Carrinho"
-             Title="Catálogo">
+             x:Name="Page"
+             Title="Carrinho">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -35,11 +35,12 @@
                 </Grid.RowDefinitions>
 
                 <ListView
-                ItemsSource="{Binding ListData, Mode=OneWay}"
-                HasUnevenRows="True"
-                CachingStrategy="RecycleElement"
-                Footer=""
-                 Grid.Row="0" Grid.Column="0">
+                    ItemsSource="{Binding ListData, Mode=OneWay}"
+                    HasUnevenRows="True"
+                    CachingStrategy="RecycleElement"
+                    Footer=""
+                    Grid.Row="0"
+                    Grid.Column="0">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -75,7 +76,7 @@
                                             <Label Text="{Binding PercentageDiscount, StringFormat='{0}%'}" TextColor="White" />
                                         </StackLayout>
 
-                                            <Label Text="{Binding PriceWithDiscount, Converter={StaticResource ValueToBrlConverter}}" Padding="3" BackgroundColor="LightGray" FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" Grid.Row="1" Grid.Column="3" />
+                                        <Label Text="{Binding Total, Converter={StaticResource ValueToBrlConverter}}" Padding="3" BackgroundColor="LightGray" FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" Grid.Row="1" Grid.Column="3" />
                                     </Grid>
                                 </Frame>
                             </ViewCell>

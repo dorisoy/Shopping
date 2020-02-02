@@ -27,6 +27,13 @@ namespace JacksonVeroneze.Shopping.ViewModels
             set => SetProperty(ref _finalPrice, value);
         }
 
+        private double _total = 0;
+        public double Total
+        {
+            get => _total;
+            set => SetProperty(ref _total, value);
+        }
+
         private double _percentageDiscount = 0;
         public double PercentageDiscount
         {

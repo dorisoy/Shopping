@@ -5,6 +5,7 @@
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:controls="clr-namespace:JacksonVeroneze.Shopping.Controls"
              xmlns:converters="clr-namespace:JacksonVeroneze.Shopping.Converters"
+             xmlns:behaviourControls="clr-namespace:JacksonVeroneze.Shopping.Behaviours.Controls"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="JacksonVeroneze.Shopping.Views.MainPage"
              x:Name="Page"
@@ -19,22 +20,18 @@
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="icon_filter"  Command="{Binding FilterByCategoryCommand}" IsEnabled="{Binding ViewModelState.HasError, Converter={StaticResource InverseBooleanConverter}}"></ToolbarItem>
+        <ToolbarItem IconImageSource="icon_filter"  Command="{Binding FilterByCategoryCommand}"></ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <StackLayout>
-            <controls:ActivityIndicatorControl Title="Carregando produtos." IsVisible="{Binding ViewModelState.IsLoading}" VerticalOptions="CenterAndExpand"></controls:ActivityIndicatorControl>
-            <controls:HasErrorControl Title="Erro ao carregar os dados." IsVisible="{Binding ViewModelState.HasError}" VerticalOptions="CenterAndExpand"></controls:HasErrorControl>
-
-            <Grid IsVisible="{Binding ViewModelState.HasData}">
+            <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="10*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
@@ -59,22 +56,26 @@
                     Grid.Row="0">
 
                         <SearchBar.Behaviors>
-                            <!--<behaviourControls:TextChangedSearchBarBehavior />-->
+                            <behaviourControls:TextChangedSearchBarBehavior />
                         </SearchBar.Behaviors>
                     </SearchBar>
-
                 </Grid>
 
+                <controls:ActivityIndicatorControl Title="Carregando produtos." IsVisible="{Binding ViewModelState.IsLoading}" VerticalOptions="CenterAndExpand" Grid.Row="1" Grid.Column="0"></controls:ActivityIndicatorControl>
+                <controls:HasErrorControl Title="Erro ao carregar os dados." IsVisible="{Binding ViewModelState.HasError}" VerticalOptions="CenterAndExpand" Grid.Row="1" Grid.Column="0"></controls:HasErrorControl>
+
                 <ListView
-                ItemsSource="{Binding ListData, Mode=OneWay}"
-                IsPullToRefreshEnabled="True"
-                RefreshCommand="{Binding RefreshCommand}"
-                IsRefreshing="{Binding ViewModelState.IsRefresh}"
-                HasUnevenRows="True"
-                SeparatorVisibility="None"
-                CachingStrategy="RecycleElement"
-                Footer=""
-                 Grid.Row="1" Grid.Column="0">
+                    ItemsSource="{Binding ListData, Mode=OneWay}"
+                    IsPullToRefreshEnabled="True"
+                    RefreshCommand="{Binding RefreshCommand}"
+                    IsRefreshing="{Binding ViewModelState.IsRefresh}"
+                    IsVisible="{Binding ViewModelState.HasData}"
+                    HasUnevenRows="True"
+                    SeparatorVisibility="None"
+                    CachingStrategy="RecycleElement"
+                    Footer=""
+                    Grid.Row="1"
+                    Grid.Column="0">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -127,6 +128,5 @@
 
                 <Button Text="{Binding TextButtonBuy}" Command="{Binding BuyCommand}" FontAttributes="Bold" BackgroundColor="#70378D" TextColor="White" HorizontalOptions="FillAndExpand" HeightRequest="45" VerticalOptions="Center" Grid.Row="2" Grid.Column="0" />
             </Grid>
-        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -36,6 +37,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
         private DelegateCommand<ProductModelData> _addRemoveFavoriteCommand;
         private DelegateCommand<ProductModelData> _decrementQuantityCommand;
         private DelegateCommand<ProductModelData> _incrementQuantityCommand;
+        private DelegateCommand<string> _searchCommand;
 
         private DelegateCommand _filterByCategoryCommand;
         private DelegateCommand _refreshCommand;
@@ -52,6 +54,11 @@ namespace JacksonVeroneze.Shopping.ViewModels
         public DelegateCommand<ProductModelData> IncrementQuantityCommand =>
             _incrementQuantityCommand ?? (
                 _incrementQuantityCommand = new DelegateCommand<ProductModelData>(IncrementQuantity));
+
+        public DelegateCommand<string> SearchCommand =>
+            _searchCommand ?? (_searchCommand = new DelegateCommand<string>(
+                async (x) => await SearchAsync(x).ConfigureAwait(false)
+            ));
 
         public DelegateCommand FilterByCategoryCommand =>
             _filterByCategoryCommand ?? (
@@ -93,6 +100,8 @@ namespace JacksonVeroneze.Shopping.ViewModels
             set => SetProperty(ref _hasItensToBuy, value);
         }
 
+        private int? _currentFilterCategory = null;
+
         private readonly Action<MainPageViewModel> VerifyItensToBuy = (vm) => vm.HasItensToBuy = vm._cart.Any();
 
         private IList<CategoryResult> _categories = new List<CategoryResult>();
@@ -100,6 +109,8 @@ namespace JacksonVeroneze.Shopping.ViewModels
         private IList<PromotionResult> _promotions = new List<PromotionResult>();
 
         private IList<ProductModelData> _cart = new List<ProductModelData>();
+
+        private CancellationTokenSource _throttleCts = new CancellationTokenSource();
 
         //
         // Summary:
@@ -182,23 +193,32 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //
         public void DecrementQuantity(ProductModelData productModelData)
         {
-            if (productModelData.Quantity - 1 < 0)
-                return;
-
-            if (productModelData.Quantity - 1 >= 0 && _cart.Any(x => x.Id == productModelData.Id))
+            try
             {
-                _cart.Remove(productModelData);
+                if (productModelData.Quantity - 1 < 0)
+                    return;
 
-                _crashlyticsService.TrackEvent("Removed product from cart", new Dictionary<string, string> { { "Product Name", productModelData.Name } });
+                if (productModelData.Quantity - 1 == 0 && _cart.Any(x => x.Id == productModelData.Id))
+                {
+                    _cart.Remove(productModelData);
+
+                    _crashlyticsService.TrackEvent("Removed product from cart", new Dictionary<string, string> { { "Product Name", productModelData.Name } });
+                }
+
+                productModelData.Quantity--;
+
+                UpdateDataProduct(productModelData);
+
+                UpdateTextButtonBuy();
+
+                VerifyItensToBuy(this);
             }
-
-            productModelData.Quantity--;
-
-            UpdateDataProduct(productModelData);
-
-            UpdateTextButtonBuy();
-
-            VerifyItensToBuy(this);
+            catch (Exception e)
+            {
+                ViewModelState.HasError = true;
+             
+                _crashlyticsService.TrackError(e);
+            }
         }
 
         //
@@ -211,20 +231,72 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //
         public void IncrementQuantity(ProductModelData productModelData)
         {
-            productModelData.Quantity++;
-
-            if (_cart.Any(x => x.Id == productModelData.Id) is false)
+            try
             {
-                _cart.Add(productModelData);
+                productModelData.Quantity++;
 
-                _crashlyticsService.TrackEvent("Added product in cart", new Dictionary<string, string> { { "Product Name", productModelData.Name } });
+                if (_cart.Any(x => x.Id == productModelData.Id) is false)
+                {
+                    _cart.Add(productModelData);
+
+                    _crashlyticsService.TrackEvent("Added product in cart", new Dictionary<string, string> { { "Product Name", productModelData.Name } });
+                }
+
+                UpdateDataProduct(productModelData);
+
+                UpdateTextButtonBuy();
+
+                VerifyItensToBuy(this);
             }
+            catch (Exception e)
+            {
+                ViewModelState.HasError = true;
+             
+                _crashlyticsService.TrackError(e);
+            }
+        }
 
-            UpdateDataProduct(productModelData);
+        //
+        // Summary:
+        //     Method responsible for performing the command action.
+        // 
+        // Parameters:
+        //   value:
+        //     The value param.
+        //
+        public async Task SearchAsync(string value)
+        {
+            if (ViewModelState.HasError is true || ViewModelState.IsBusy is true || ViewModelState.IsLoading is true || ViewModelState.IsSearch is true)
+                return;
 
-            UpdateTextButtonBuy();
+            ViewModelState.IsSearch = true;
 
-            VerifyItensToBuy(this);
+            try
+            {
+                Interlocked.Exchange(ref _throttleCts, new CancellationTokenSource()).Cancel();
+
+                await Task.Delay(TimeSpan.FromMilliseconds(500), this._throttleCts.Token)
+                      .ContinueWith(async task =>
+                      {
+                          List<ProductResult> listDataSearch = _products.Where(x => x.Name.ToUpperInvariant().Contains(value.ToUpperInvariant())).ToList();
+
+                          ListData.ReplaceRange(await FactoryProductModelDataAsync(listDataSearch));
+                      },
+                    CancellationToken.None,
+                    TaskContinuationOptions.OnlyOnRanToCompletion,
+                    TaskScheduler.FromCurrentSynchronizationContext());
+            }
+            catch (TaskCanceledException) { }
+            catch (Exception e)
+            {
+                _crashlyticsService.TrackError(e);
+
+                ViewModelState.HasError = true;
+            }
+            finally
+            {
+                ViewModelState.IsSearch = false;
+            }
         }
 
         //
@@ -233,19 +305,40 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // 
         private async void FilterByCategoryAsync()
         {
-            IList<IActionSheetButton> buttons = new List<IActionSheetButton>();
+            try
+            {
+                if (ViewModelState.HasError)
+                    return;
 
-            Action<CategoryResult> showProductsBycategoryAction = async (i)
-                => ListData.ReplaceRange(await FactoryProductModelDataAsync(_products.Where(x => x.CategoryId == i.Id).ToList()));
+                IList<IActionSheetButton> buttons = new List<IActionSheetButton>();
 
-            Action showAllProducts = async () => ListData.ReplaceRange(await FactoryProductModelDataAsync(_products));
+                Action<CategoryResult> showProductsBycategoryAction = async (i) =>
+                {
+                    _currentFilterCategory = i.Id;
 
-            buttons.Add(ActionSheetButton.CreateButton("Todas as categorias", showAllProducts));
+                    ListData.ReplaceRange(await FactoryProductModelDataAsync(_products.Where(x => x.CategoryId == i.Id).ToList()));
+                };
 
-            foreach (CategoryResult category in _categories)
-                buttons.Add(ActionSheetButton.CreateButton(category.Name, showProductsBycategoryAction, category));
+                Action showAllProducts = async () =>
+                {
+                    _currentFilterCategory = null;
 
-            await _pageDialogService.DisplayActionSheetAsync("Escolha a categoria para filtrar.", buttons.ToArray());
+                    ListData.ReplaceRange(await FactoryProductModelDataAsync(_products));
+                };
+
+                buttons.Add(ActionSheetButton.CreateButton("Todas as categorias", showAllProducts));
+
+                foreach (CategoryResult category in _categories)
+                    buttons.Add(ActionSheetButton.CreateButton(category.Name, showProductsBycategoryAction, category));
+
+                await _pageDialogService.DisplayActionSheetAsync("Escolha a categoria para filtrar.", buttons.ToArray());
+            }
+            catch (Exception e)
+            {
+                ViewModelState.HasError = true;
+
+                _crashlyticsService.TrackError(e);
+            }
         }
 
         //
@@ -256,7 +349,14 @@ namespace JacksonVeroneze.Shopping.ViewModels
         {
             ViewModelState.IsRefresh = true;
 
-            await LoadDataAsync();
+            if (_currentFilterCategory is null)
+            {
+                ListData.ReplaceRange(await FactoryProductModelDataAsync(_products));
+            }
+            else
+            {
+                ListData.ReplaceRange(await FactoryProductModelDataAsync(_products.Where(x => x.CategoryId == _currentFilterCategory).ToList()));
+            }
 
             ViewModelState.IsRefresh = false;
         }
@@ -380,7 +480,8 @@ namespace JacksonVeroneze.Shopping.ViewModels
         {
             if (productModelData.CategoryId is null)
             {
-                productModelData.FinalPrice = productModelData.OriginalPrice * productModelData.Quantity;
+                productModelData.FinalPrice = productModelData.OriginalPrice;
+                productModelData.Total = productModelData.OriginalPrice * productModelData.Quantity;
                 return;
             }
 
@@ -396,13 +497,15 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
             if (promotionPoliceResult is null)
             {
-                productModelData.FinalPrice = productModelData.OriginalPrice * productModelData.Quantity;
+                productModelData.FinalPrice = productModelData.OriginalPrice;
+                productModelData.Total = productModelData.OriginalPrice * productModelData.Quantity;
                 productModelData.PercentageDiscount = 0;
 
                 return;
             }
 
-            productModelData.FinalPrice = (productModelData.OriginalPrice - (productModelData.OriginalPrice * (promotionPoliceResult.Discount / 100))) * productModelData.Quantity;
+            productModelData.FinalPrice = (productModelData.OriginalPrice - (productModelData.OriginalPrice * (promotionPoliceResult.Discount / 100)));
+            productModelData.Total = productModelData.FinalPrice * productModelData.Quantity;
             productModelData.PercentageDiscount = promotionPoliceResult.Discount;
         }
 
