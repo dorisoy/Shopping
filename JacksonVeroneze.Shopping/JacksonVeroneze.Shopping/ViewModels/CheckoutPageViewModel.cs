@@ -75,6 +75,13 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // 
         public async void BuyAsync()
         {
+            if (string.IsNullOrEmpty(CardNumber) || string.IsNullOrEmpty(Expiration) || string.IsNullOrEmpty(Cvv))
+            {
+                await _pageDialogService.DisplayAlertAsync("Erro", "Antes de prosseguir, informe os dados do cartão de crédito.", "Ok");
+
+                return;
+            }
+
             UserDialogs.Instance.ShowLoading("Aguarde, efetuando pagamento.", MaskType.Black);
             await Task.Delay(3000);
             UserDialogs.Instance.HideLoading();
