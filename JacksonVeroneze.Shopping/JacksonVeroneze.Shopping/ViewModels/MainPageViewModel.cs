@@ -278,6 +278,8 @@ namespace JacksonVeroneze.Shopping.ViewModels
                 await Task.Delay(TimeSpan.FromMilliseconds(500), this._throttleCts.Token)
                       .ContinueWith(async task =>
                       {
+                          _currentFilterCategory = null;
+
                           List<ProductResult> listDataSearch = _products.Where(x => x.Name.ToUpperInvariant().Contains(value.ToUpperInvariant())).ToList();
 
                           ListData.ReplaceRange(await FactoryProductModelDataAsync(listDataSearch));
@@ -534,7 +536,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // 
         private void UpdateTextButtonBuy()
         {
-            double total = _cart.Where(x => x.Quantity > 0).Sum(x => x.FinalPrice);
+            double total = _cart.Where(x => x.Quantity > 0).Sum(x => x.Total);
 
             string totalPtBR = total.ToString("C", CultureInfo.CreateSpecificCulture("pt-BR"));
 
