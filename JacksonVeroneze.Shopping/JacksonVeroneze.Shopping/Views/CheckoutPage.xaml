@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:JacksonVeroneze.Shopping.Converters"
+             xmlns:converters1="clr-namespace:JacksonVeroneze.Shopping.Converters.CreditCard"
+             xmlns:behavioursValidators="clr-namespace:JacksonVeroneze.Shopping.Behaviours.Validators"
+             xmlns:behavioursFormatters="clr-namespace:JacksonVeroneze.Shopping.Behaviours.Formatters"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="JacksonVeroneze.Shopping.Views.CheckoutPage"
+             x:Name="Page"
+             Title="Checkout">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters1:CardNumberToImageConverter x:Key="CardConverter"
+                    Amex="ic_amex"
+                    Dinners="ic_dinersclub"
+                    Discover="ic_discover" 
+                    JCB="ic_jcb"
+                    MasterCard="ic_mastercard" 
+                    Visa="ic_visa"
+                    NotRecognized="nocards"/>
+
+            <converters1:CardNumberToImageConverter x:Key="CardLightConverter"
+                    Amex="americanexpresslogo"
+                    Dinners="ic_dinersclub_white.png"
+                    Discover="ic_discover_light" 
+                    JCB="ic_jcb"
+                    MasterCard="ic_mastercard_white" 
+                    Visa="ic_visa_white"
+                    NotRecognized="ic_chip"/>
+
+            <converters1:CardNumberToColorConverter x:Key="CardColorConverter"
+                    Amex="#3177CB"
+                    Dinners="#1B4F8F"
+                    Discover="#E9752F" 
+                    JCB="#9E2921"
+                    MasterCard="#394854" 
+                    Visa="#2867BA"
+                    NotRecognized="#75849D"/>
+
+            <Color x:Key="CardLabelColor">#B5BBC2</Color>
+            <Color x:Key="CardValueColor">LightGray</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="250" />
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Frame Margin="10" Padding="20" HeightRequest="180" BackgroundColor="{Binding CardNumber, Converter={StaticResource CardColorConverter}}" Grid.Row="0" Grid.Column="0">
+                <Grid ColumnSpacing="30" RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="{Binding CardNumber, Converter={StaticResource CardLightConverter}}" HeightRequest="40" Grid.Row="0"  Grid.Column="1" HorizontalOptions="EndAndExpand"/>
+
+                    <Label Text="Card Number" LineBreakMode="TailTruncation" FontSize="12" TextColor="{StaticResource CardValueColor}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+                    <Label Text="{Binding CardNumber}" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource CardLabelColor}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+                    <Label Text="Expiration" Margin="0,20,0,0" FontSize="12" TextColor="{StaticResource CardValueColor}" Grid.Row="3" Grid.Column="0"/>
+
+                    <Label Text="{Binding Expiration}" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource CardLabelColor}" Grid.Row="4" Grid.Column="0"/>
+
+                    <Label Text="Cvv" Margin="0,20,0,0" FontSize="12" TextColor="{StaticResource CardValueColor}" Grid.Row="3" Grid.Column="1"/>
+
+                    <Label Text="{Binding Cvv}" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource CardLabelColor}" Grid.Row="4"  Grid.Column="1"/>
+                </Grid>
+            </Frame>
+
+            <Grid Margin="10" Grid.Row="1" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Dados do cartão" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" FontSize="Large"/>
+                <Label Text="Insira as informações do seu cartão de crédito/débito" FontSize="Medium" Grid.Row="1" Grid.Column="0"/>
+
+                <Entry Text="{Binding CardNumber, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Número do cartão" Grid.Row="2" Grid.Column="0">
+                    <Entry.Behaviors>
+                        <behavioursFormatters:MaskedBehavior Mask="XXXX XXXX XXXX XXXX"/>
+                        <behavioursValidators:MaxLengthValidatorBehavior MaxLength="19"/>
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Entry Text="{Binding Expiration, Mode=TwoWay}" Keyboard="Numeric" Placeholder="MM/YY" Grid.Row="3" Grid.Column="0">
+                    <Entry.Behaviors>
+                        <behavioursFormatters:MaskedBehavior Mask="XX/XX"/>
+                        <behavioursValidators:MaxLengthValidatorBehavior MaxLength="19"/>
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Entry Text="{Binding Cvv, Mode=TwoWay}" Keyboard="Numeric" Placeholder="CVC" Grid.Row="4" Grid.Column="0">
+                    <Entry.Behaviors>
+                        <behavioursFormatters:MaskedBehavior Mask="XXX" />
+                        <behavioursValidators:MaxLengthValidatorBehavior MaxLength="3"/>
+                    </Entry.Behaviors>
+                </Entry>
+            </Grid>
+
+            <Button Text="Finalizar a Compra" Command="{Binding BuyCommand}" FontAttributes="Bold" BackgroundColor="{StaticResource ColorPrimary}" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Grid.Row="2" Grid.Column="0" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

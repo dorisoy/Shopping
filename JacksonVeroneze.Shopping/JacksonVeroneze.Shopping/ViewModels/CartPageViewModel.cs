@@ -26,7 +26,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
         private readonly IPageDialogService _pageDialogService;
         //
         private readonly ICrashlyticsService _crashlyticsService;
-        
+
         private DelegateCommand _buyCommand;
 
         public DelegateCommand BuyCommand =>
@@ -85,10 +85,18 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // Summary:
         //     Method responsible for performing the command action.
         // 
-        public void BuyAsync()
+        public async void BuyAsync()
         {
             _crashlyticsService.TrackEvent(ApplicationEvents.CHECKOUT,
                     new Dictionary<string, string>() { { "Value", Total.ToString() } });
+
+            ViewModelState.IsBusyNavigating = true;
+
+            await _navigationService.NavigateAsync(nameof(CheckoutPage), new NavigationParameters {
+                { "total", Total.ToString() },
+            });
+
+            ViewModelState.IsBusyNavigating = false;
         }
 
         //

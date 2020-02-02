@@ -39,6 +39,7 @@ namespace JacksonVeroneze.Shopping
             containerRegistry.RegisterForNavigation<CartPage, CartPageViewModel>();
 
             InjectorBootStrapper.RegisterTypes(containerRegistry);
+            containerRegistry.RegisterForNavigation<CheckoutPage, CheckoutPageViewModel>();
         }
     }
 }
