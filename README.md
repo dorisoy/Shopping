@@ -26,6 +26,15 @@ Clone este repositório e abra o [ShoppingCarts.sln](https://github.com/jacksonv
 * [Visual Studio 2019](https://visualstudio.microsoft.com/) com Xamarin
 * [Visual Studio App Center](https://appcenter.ms/) - Compilação, Diagnostics, Analytics
 
+## Capturas
+<p>
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/1.jpeg" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/2.jpeg" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/3.jpeg" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/4.jpeg" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/5.jpeg" width="150" height="300">
+</p>
+
 ## Autor
 * **Jackson Veroneze** - *Contributor* - [JacksonVeroneze](https://github.com/JacksonVeroneze)
 
