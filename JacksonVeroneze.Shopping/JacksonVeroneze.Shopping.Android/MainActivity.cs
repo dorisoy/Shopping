@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using Acr.UserDialogs;
+using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using JacksonVeroneze.Shopping.Common;
@@ -22,6 +23,8 @@ namespace JacksonVeroneze.Shopping.Droid
 
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
 
+            UserDialogs.Init(this);
+
             LoadApplication(new App(new AndroidInitializer()));
         }
     }
@@ -30,7 +33,7 @@ namespace JacksonVeroneze.Shopping.Droid
     {
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<ISQLiteConnectionProvider, SQLiteConnectionProvider>();
+            containerRegistry.Register<IDbConnectionProvider, DbConnectionProvider>();
         }
     }
 }

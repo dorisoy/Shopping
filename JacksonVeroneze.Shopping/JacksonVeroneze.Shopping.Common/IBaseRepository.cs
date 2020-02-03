@@ -1,20 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using LiteDB;
+using System;
 
 namespace JacksonVeroneze.Shopping.Common
 {
     public interface IBaseRepository<T> where T : IBaseEntity
     {
-        Task AddAsync(T entity);
+        bool Add(T entity);
 
-        Task<T> FindAsync(int id);
-
-        Task<List<T>> FindAllAsync();
-
-        Task RemoveAsync(T entity);
-
-        Task UpdateAsync(T entity);
-
-        Task UpdateExceptUpdateAtAsync(T entity);
+        bool Remove(Guid id);
     }
 }

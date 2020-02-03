@@ -9,4 +9,8 @@
     <ProjectReference Include="..\JacksonVeroneze.Shopping.Domain\JacksonVeroneze.Shopping.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>

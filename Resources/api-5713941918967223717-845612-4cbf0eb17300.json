@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "api-5713941918967223717-845612",
+  "private_key_id": "4cbf0eb17300c54975fc41773250829cbcf2c2a0",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCU734zSXHw894t\nclNx15PsxooQix3nBAJZ1dicfYFVEwKX44PEoDFV1mwUjjibGT4T5yxJT6krempK\nQ7/ofO6b9D1S0jPMd1UcAhASLxacaBUbQXaubIOxvP7rupXivWfeGkpnTDusoQkl\nUR0wiQ4UR/tQ0HvFKNlh7y3FOGtlR9SVkyoDaqFBKAYnWDGQwuy+/yx98emOsBLy\nf2mOg7hl9LhdYfXHKBkb0btwo9ZiNIEjYEMEsYO+5kTPVn7F2YYQiNtk58+REB9Y\nn9LlnakDU1S1nifEAOwlz0+KU5UWu62rZsZxWYWr5ZkHjHe1cg/ZvQU/nryZ1yvn\nSpahUaXxAgMBAAECggEAAiTuyuDn0pxFj/ScFvKd1+7a8nZ49KEuJbT27IZOgJqd\n6EZc9RSly9t4OuOIam+vfZAW7kAqeLAASKXh8zkrBkoB65JzLyJuB7Uzc13LFDZJ\noiwocbfGPZ6jaylsGpObFXKlOyTVY45vwtQAlVyHWLKEKnDO3n2XoBKrtLHeXYWT\nXmfYepx7rtLfgwQhmyRT8qdp8Ox2ZEQFLZNZUbBoJU5mXh1gdSzfDV/C08WgDfEY\niP7QHHugcK3A0IQYpqfCJqS8TAV7pxrxbkmz07S+MZMaJWqZUFZYurmGJG59lwIx\nkgUrBjdUCemgASAZvrKOlxZeXVWvETXMumUiS8T5sQKBgQDR05f2jlzXkFup8u7d\nx6jTQGu52I+/F9VWILTKeO7d8oM46Oc9cfhRVvBSlCykdc+iwYtXlAp4O1qPxJpa\nDChc8cFkbYQFythubKTU55psiV00A6JjWKhx7JeJ9bqwZb9g/uugElXosmWmizFt\nVodHD5pZlFUFgZ8ojtO7gPG4HwKBgQC1tadWAE8BGy73m3yxb3cyP83j50szEcDn\nEsOQ0J8WZhdjs507jzBSUFtD9/TkBeMNFXANZQbmaWMG5+FUF4QVqE5S8pDavNTJ\njHjKXKMY/7MJw6C1g6zWipqJPXwB8sM6C7kWgCOuAIZM5q6rrTcBgBPtWOp3H5ST\n/l13ZkUf7wKBgQC5kH65TyfugD2ArFbxjozQ3w0mW86sukAynlQlKBRf9wR0BQ3U\nOoHYNaHt9hsRCxupHa/EsSkdMaiissWq00uy/x8AWRZEJSOJbM3NeFIKoOTrhjdL\n0vGNZyaRnN8Q97rr5iat9ulBFNxvEHSS9M5IWxUvGc6jQwJl1QKNtbiQEwKBgD6r\nbxInOxhLktBNLR1ZL0gCX3VJ0VLEvb40Z4SrnyKvhUOasBDZmrXZBxETFMAME7nw\nedv0ywNut3urP7ir/58klBbhl/oJBG6a5xIMDyhRECO+98+CoXrBBPluXjWhz5lW\nb7iF60hY3/jn2rhVHlKDJNxIPV1mY+0C3qOOfyq7AoGAfiQBIm+gt0TaImVDKD/F\nTfm5igvIOcDeMfm9f9rvdhdwFfHxvf0VqRmO4tJFHtL46/ZWdsJNkpFdcLxH6cqA\nqzQjgpF6mFrVvujfaQ3l7BF7OC+e5qdPXtYfja9abKXYZDoU/+yujpOpXUV7kTiI\nceM80HG3Ben+GTzhYR8sYt4=\n-----END PRIVATE KEY-----\n",
+  "client_email": "publishshopping@api-5713941918967223717-845612.iam.gserviceaccount.com",
+  "client_id": "107312742768774350316",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/publishshopping%40api-5713941918967223717-845612.iam.gserviceaccount.com"
+}

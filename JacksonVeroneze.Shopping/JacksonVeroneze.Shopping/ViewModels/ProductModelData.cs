@@ -13,6 +13,13 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
         public int? CategoryId { get; set; }
 
+        private string _promotion;
+        public string Promotion
+        {
+            get => _promotion;
+            set => SetProperty(ref _promotion, value);
+        }
+
         private double _originalPrice = 0;
         public double OriginalPrice
         {
@@ -20,11 +27,18 @@ namespace JacksonVeroneze.Shopping.ViewModels
             set => SetProperty(ref _originalPrice, value);
         }
 
-        private double _priceWithDiscount = 0;
-        public double PriceWithDiscount
+        private double _finalPrice = 0;
+        public double FinalPrice
         {
-            get => _priceWithDiscount;
-            set => SetProperty(ref _priceWithDiscount, value);
+            get => _finalPrice;
+            set => SetProperty(ref _finalPrice, value);
+        }
+
+        private double _total = 0;
+        public double Total
+        {
+            get => _total;
+            set => SetProperty(ref _total, value);
         }
 
         private double _percentageDiscount = 0;

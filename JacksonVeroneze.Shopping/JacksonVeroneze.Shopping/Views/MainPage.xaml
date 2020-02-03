@@ -5,6 +5,7 @@
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:controls="clr-namespace:JacksonVeroneze.Shopping.Controls"
              xmlns:converters="clr-namespace:JacksonVeroneze.Shopping.Converters"
+             xmlns:behaviourControls="clr-namespace:JacksonVeroneze.Shopping.Behaviours.Controls"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="JacksonVeroneze.Shopping.Views.MainPage"
              x:Name="Page"
@@ -13,7 +14,9 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <converters:ValueGreaterThanZeroConverter x:Key="ValueGreaterThanZeroConverter" />
             <converters:ValueToBrlConverter x:Key="ValueToBrlConverter" />
+            <converters:StringIsNotNullOrEmptyToBooleanConverter x:Key="StringIsNotNullOrEmptyToBooleanConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -22,112 +25,114 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <StackLayout>
-            <controls:ActivityIndicatorControl Title="Carregando produtos." IsVisible="{Binding ViewModelState.IsLoading}" VerticalOptions="CenterAndExpand"></controls:ActivityIndicatorControl>
-            <controls:HasErrorControl Title="Erro ao carregar os dados." IsVisible="{Binding ViewModelState.HasError}" VerticalOptions="CenterAndExpand"></controls:HasErrorControl>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10*" />
+            </Grid.ColumnDefinitions>
 
-            <Grid IsVisible="{Binding ViewModelState.HasData}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid BackgroundColor="{StaticResource PreferGray}" Padding="10" Grid.Row="0" Grid.Column="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="40" />
                 </Grid.RowDefinitions>
 
-                <Grid BackgroundColor="#e3e3e3" Padding="10" Grid.Row="0" Grid.Column="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40" />
-                    </Grid.RowDefinitions>
-
-                    <SearchBar
+                <SearchBar
+                    AutomationId="SearchBarSearchId"
                     x:Name="SearchBar"
                     SearchCommand="{Binding SearchCommand}" 
                     SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"
-                    IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
+                    IsEnabled="{Binding ViewModelState.HasError, Converter={StaticResource InverseBooleanConverter}}"
                     Placeholder="Busca por nome do produto."
                     HorizontalOptions="FillAndExpand"
                     BackgroundColor="White"
                     Grid.Column="0"
                     Grid.Row="0">
 
-                        <SearchBar.Behaviors>
-                            <!--<behaviourControls:TextChangedSearchBarBehavior />-->
-                        </SearchBar.Behaviors>
-                    </SearchBar>
-
-                </Grid>
-
-                <ListView
-                ItemsSource="{Binding ListData, Mode=OneWay}"
-                IsPullToRefreshEnabled="True"
-                RefreshCommand="{Binding RefreshCommand}"
-                IsRefreshing="{Binding ViewModelState.IsRefresh}"
-                HasUnevenRows="True"
-                SeparatorVisibility="None"
-                CachingStrategy="RecycleElement"
-                Footer=""
-                 Grid.Row="1" Grid.Column="0">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Frame Padding="10,20,10,20" Margin="10,7,10,7">
-                                    <Grid ColumnSpacing="10">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-
-                                        <ffimageloading:CachedImage Source="{Binding Photo}" CacheDuration= "50" RetryCount= "3" RetryDelay= "600" DownsampleToViewSize = "true" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" />
-
-                                        <Label Text="{Binding Name}" FontSize="Subtitle" FontAttributes="Bold" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" />
-                                        <ImageButton Source="icon_star_border" Command="{Binding BindingContext.AddRemoveFavoriteCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="End" VerticalOptions="Start" HeightRequest="30" WidthRequest="30" Opacity="0.6" BackgroundColor="White" IsVisible="{Binding IsFavorite, Converter={StaticResource InverseBooleanConverter}}"  Grid.Row="0" Grid.Column="3" />
-                                        <ImageButton Source="icon_star_black" Command="{Binding BindingContext.AddRemoveFavoriteCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="End" VerticalOptions="Start" HeightRequest="30" WidthRequest="30" Opacity="0.6" BackgroundColor="White" IsVisible="{Binding IsFavorite}"  Grid.Row="0" Grid.Column="3" />
-
-                                        <StackLayout BackgroundColor="#e3e3e3" Orientation="Horizontal" HorizontalOptions="Start" Padding="3" Grid.Row="1" Grid.Column="1">
-                                            <Image Source="icon_arrow_downward" WidthRequest="15" HeightRequest="15" HorizontalOptions="Start" />
-                                            <Label Text="{Binding PercentageDiscount, StringFormat='{0}%'}" TextColor="White" />
-                                        </StackLayout>
-
-                                        <Label HorizontalTextAlignment="Center" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="{Binding Quantity}" FontSize="Subtitle" FontAttributes="Bold" />
-                                                    <Span Text=" UN" />
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-
-                                        <Label Text="{Binding PriceWithDiscount, Converter={StaticResource ValueToBrlConverter}}" FontSize="Subtitle" FontAttributes="Bold" VerticalTextAlignment="Center" Grid.Row="2" Grid.Column="1" />
-                                        <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
-                                            <ImageButton Source="icon_remove" Command="{Binding BindingContext.DecrementQuantityCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand" BackgroundColor="#00CD57" HeightRequest="35" />
-                                            <ImageButton Source="icon_add" Command="{Binding BindingContext.IncrementQuantityCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand" BackgroundColor="#00CD57" HeightRequest="35" />
-                                        </StackLayout>
-                                    </Grid>
-                                </Frame>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-
-                <StackLayout BackgroundColor="#70378D" HeightRequest="45" Padding="5" Grid.Row="2" Grid.Column="0">
-                    <Button Text="{Binding TextButtonBuy}" Command="{Binding BuyCommand}" FontAttributes="Bold" BackgroundColor="#FFFF8C" HorizontalOptions="Center" HeightRequest="45" VerticalOptions="Center" />
-                </StackLayout>
+                    <SearchBar.Behaviors>
+                        <behaviourControls:TextChangedSearchBarBehavior />
+                    </SearchBar.Behaviors>
+                </SearchBar>
             </Grid>
-        </StackLayout>
+
+            <controls:ActivityIndicatorControl Title="Carregando produtos." IsVisible="{Binding ViewModelState.IsLoading}" VerticalOptions="CenterAndExpand" Grid.Row="1" Grid.Column="0"></controls:ActivityIndicatorControl>
+            <controls:HasErrorControl Title="Erro ao carregar os dados." IsVisible="{Binding ViewModelState.HasError}" VerticalOptions="CenterAndExpand" Grid.Row="1" Grid.Column="0"></controls:HasErrorControl>
+
+            <ListView
+                AutomationId="ListViewListDataId"
+                    ItemsSource="{Binding ListData, Mode=OneWay}"
+                    IsPullToRefreshEnabled="True"
+                    RefreshCommand="{Binding RefreshCommand}"
+                    IsRefreshing="{Binding ViewModelState.IsRefresh}"
+                    IsVisible="{Binding ViewModelState.HasData}"
+                    HasUnevenRows="True"
+                    SeparatorVisibility="None"
+                    CachingStrategy="RecycleElement"
+                    Footer=""
+                    Grid.Row="1"
+                    Grid.Column="0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame Padding="10,20,10,10" Margin="10,7,10,7">
+                                <Grid ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25*" />
+                                        <ColumnDefinition Width="35*" />
+                                        <ColumnDefinition Width="30*" />
+                                        <ColumnDefinition Width="10*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="10*" />
+                                        <RowDefinition Height="22" />
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <ffimageloading:CachedImage Source="{Binding Photo}" CacheDuration= "50" RetryCount= "3" RetryDelay= "600" DownsampleToViewSize = "true" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" />
+
+                                    <Label Text="{Binding Name}" FontSize="Subtitle" FontAttributes="Bold" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" />
+                                    <ImageButton Source="icon_star_border" Command="{Binding BindingContext.AddRemoveFavoriteCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="End" VerticalOptions="Start" HeightRequest="30" WidthRequest="30" Opacity="0.6" BackgroundColor="White" IsVisible="{Binding IsFavorite, Converter={StaticResource InverseBooleanConverter}}"  Grid.Row="0" Grid.Column="3" />
+                                    <ImageButton Source="icon_star_black" Command="{Binding BindingContext.AddRemoveFavoriteCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="End" VerticalOptions="Start" HeightRequest="30" WidthRequest="30" Opacity="0.6" BackgroundColor="White" IsVisible="{Binding IsFavorite}"  Grid.Row="0" Grid.Column="3" />
+
+                                    <StackLayout BackgroundColor="{StaticResource ColorPrimary}" Orientation="Horizontal" HorizontalOptions="Start" IsVisible="{Binding PercentageDiscount, Converter={StaticResource ValueGreaterThanZeroConverter}}" Padding="3" Grid.Row="1" Grid.Column="1">
+                                        <Image Source="icon_arrow_downward" WidthRequest="15" HeightRequest="15" HorizontalOptions="Start" />
+                                        <Label Text="{Binding PercentageDiscount, StringFormat='{0}%'}" TextColor="White" />
+                                    </StackLayout>
+
+                                    <Label HorizontalTextAlignment="Center" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Quantity}" FontSize="Subtitle" FontAttributes="Bold" />
+                                                <Span Text=" UN" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <Label Text="{Binding FinalPrice, Converter={StaticResource ValueToBrlConverter}}" FontSize="Subtitle" FontAttributes="Bold" VerticalTextAlignment="Center" Grid.Row="2" Grid.Column="1" />
+                                    <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
+                                        <ImageButton AutomationId="ImageButtonDecrementQuantityId" Source="icon_remove" Command="{Binding BindingContext.DecrementQuantityCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource ColorAccent}" HeightRequest="35" />
+                                        <ImageButton AutomationId="ImageButtonIncrementQuantityId" Source="icon_add" Command="{Binding BindingContext.IncrementQuantityCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource ColorAccent}" HeightRequest="35" />
+                                    </StackLayout>
+
+                                    <Label Text="{Binding Promotion}" FontSize="Small" BackgroundColor="{StaticResource PreferGray}" IsVisible="{Binding Promotion, Converter={StaticResource StringIsNotNullOrEmptyToBooleanConverter}}" HorizontalOptions="End" Padding="1" HorizontalTextAlignment="End" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" />
+                                </Grid>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button AutomationId="ButtonBuyId" Text="{Binding TextButtonBuy}" Command="{Binding BuyCommand}" FontAttributes="Bold" BackgroundColor="{StaticResource ColorPrimary}" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Grid.Row="2" Grid.Column="0" />
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
