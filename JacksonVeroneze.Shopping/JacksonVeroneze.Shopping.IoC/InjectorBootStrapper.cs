@@ -1,6 +1,4 @@
-﻿using Inovadora.GVIS.Infra.Data.Repositories;
-using JacksonVeroneze.Shopping.Domain.Interface.Repositories;
-using JacksonVeroneze.Shopping.Domain.Interface.Services;
+﻿using JacksonVeroneze.Shopping.Domain.Interface.Services;
 using JacksonVeroneze.Shopping.Infra.CrossCutting.Network;
 using JacksonVeroneze.Shopping.Services;
 using JacksonVeroneze.Shopping.Services.Interfaces;
@@ -14,13 +12,11 @@ namespace JacksonVeroneze.Shopping.IoC
         {
             // Services
             containerRegistry.Register<ICategoryService, CategoryService>();
-            containerRegistry.Register<IFavoriteService, FavoriteService>();
             containerRegistry.Register<IProductService, ProductService>();
             containerRegistry.Register<IPromotionService, PromotionService>();
             containerRegistry.Register<ICrashlyticsService, CrashlyticsService>();
 
             // Repositories
-            containerRegistry.RegisterSingleton<IFavoriteRepository, FavoriteRepository>();
 
             // Network
             containerRegistry.Register<MakeRequest, MakeRequest>();

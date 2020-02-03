@@ -9,17 +9,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JacksonVeroneze.Shopping.An
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JacksonVeroneze.Shopping.iOS", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.iOS\JacksonVeroneze.Shopping.iOS.csproj", "{EA6DECAD-FD46-44B2-8C1C-951ECB03EC55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JacksonVeroneze.Shopping.Common", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Common\JacksonVeroneze.Shopping.Common.csproj", "{3381AA89-E767-40E4-B32F-C8E2CE9BE537}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JacksonVeroneze.Shopping.Common", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Common\JacksonVeroneze.Shopping.Common.csproj", "{3381AA89-E767-40E4-B32F-C8E2CE9BE537}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JacksonVeroneze.Shopping.Domain", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Domain\JacksonVeroneze.Shopping.Domain.csproj", "{1FDE8D8E-5C65-422B-AACC-F075AD094508}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JacksonVeroneze.Shopping.Domain", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Domain\JacksonVeroneze.Shopping.Domain.csproj", "{1FDE8D8E-5C65-422B-AACC-F075AD094508}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JacksonVeroneze.Shopping.Infra.CrossCutting", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Infra.CrossCutting\JacksonVeroneze.Shopping.Infra.CrossCutting.csproj", "{26C42A33-2D24-42AD-8385-34242EA2DD37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JacksonVeroneze.Shopping.Infra.CrossCutting", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Infra.CrossCutting\JacksonVeroneze.Shopping.Infra.CrossCutting.csproj", "{26C42A33-2D24-42AD-8385-34242EA2DD37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JacksonVeroneze.Shopping.Infra.Data", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Infra.Data\JacksonVeroneze.Shopping.Infra.Data.csproj", "{0AC40828-A534-467E-A98D-ED9A47DA42D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JacksonVeroneze.Shopping.Infra.Data", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Infra.Data\JacksonVeroneze.Shopping.Infra.Data.csproj", "{0AC40828-A534-467E-A98D-ED9A47DA42D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JacksonVeroneze.Shopping.IoC", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.IoC\JacksonVeroneze.Shopping.IoC.csproj", "{1526A916-C5D9-4201-994D-D5111E1AE1FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JacksonVeroneze.Shopping.IoC", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.IoC\JacksonVeroneze.Shopping.IoC.csproj", "{1526A916-C5D9-4201-994D-D5111E1AE1FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JacksonVeroneze.Shopping.Services", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Services\JacksonVeroneze.Shopping.Services.csproj", "{D013AE81-3266-4318-863C-879E5ED1F9AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JacksonVeroneze.Shopping.Services", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Services\JacksonVeroneze.Shopping.Services.csproj", "{D013AE81-3266-4318-863C-879E5ED1F9AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JacksonVeroneze.Shopping.Services.Tests", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Services.Tests\JacksonVeroneze.Shopping.Services.Tests.csproj", "{AAEBF884-7390-446F-9DF5-A9A7842E5A67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JacksonVeroneze.Shopping.Tests", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Tests\JacksonVeroneze.Shopping.Tests.csproj", "{9CDB9355-5798-4149-9836-28E5E3EE63E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -261,6 +265,54 @@ Global
 		{D013AE81-3266-4318-863C-879E5ED1F9AF}.Release|iPhone.Build.0 = Release|Any CPU
 		{D013AE81-3266-4318-863C-879E5ED1F9AF}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{D013AE81-3266-4318-863C-879E5ED1F9AF}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Ad-Hoc|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Ad-Hoc|Any CPU.Build.0 = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Ad-Hoc|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.AppStore|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.AppStore|Any CPU.Build.0 = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.AppStore|iPhone.Build.0 = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.AppStore|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.AppStore|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Release|iPhone.Build.0 = Release|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{AAEBF884-7390-446F-9DF5-A9A7842E5A67}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Ad-Hoc|Any CPU.ActiveCfg = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Ad-Hoc|Any CPU.Build.0 = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Ad-Hoc|iPhone.Build.0 = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Ad-Hoc|iPhoneSimulator.Build.0 = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.AppStore|Any CPU.Build.0 = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.AppStore|iPhone.ActiveCfg = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.AppStore|iPhone.Build.0 = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.AppStore|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.AppStore|iPhoneSimulator.Build.0 = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Release|iPhone.Build.0 = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{9CDB9355-5798-4149-9836-28E5E3EE63E6}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

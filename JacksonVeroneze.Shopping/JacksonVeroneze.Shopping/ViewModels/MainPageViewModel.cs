@@ -1,6 +1,4 @@
-﻿using JacksonVeroneze.Shopping.Domain.Entities;
-using JacksonVeroneze.Shopping.Domain.Interface.Repositories;
-using JacksonVeroneze.Shopping.Domain.Interface.Services;
+﻿using JacksonVeroneze.Shopping.Domain.Interface.Services;
 using JacksonVeroneze.Shopping.Domain.Results;
 using JacksonVeroneze.Shopping.MvvmHelpers;
 using JacksonVeroneze.Shopping.Services.Interfaces;
@@ -16,7 +14,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace JacksonVeroneze.Shopping.ViewModels
 {
@@ -31,11 +28,9 @@ namespace JacksonVeroneze.Shopping.ViewModels
         private readonly ICrashlyticsService _crashlyticsService;
         //
         private readonly ICategoryService _categoryService;
-        private readonly IFavoriteService _favoriteService;
         private readonly IProductService _productService;
         private readonly IPromotionService _promotionService;
         //
-        private readonly IFavoriteRepository _favoriteRepository;
 
         private DelegateCommand<ProductModelData> _addRemoveFavoriteCommand;
         private DelegateCommand<ProductModelData> _decrementQuantityCommand;
@@ -135,31 +130,21 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //   favoriteService:
         //     The favoriteService param.
         //
-        //   productService:
-        //     The productService param.
-        //
         //   promotionService:
         //     The promotionService param.
-        //
-        //   favoriteRepository:
-        //     The favoriteRepository param.
         //
         public MainPageViewModel(INavigationService navigationService,
             IPageDialogService pageDialogService,
             ICrashlyticsService crashlyticsService,
             ICategoryService categoryService,
-            IFavoriteService favoriteService,
             IProductService productService,
-            IPromotionService promotionService,
-            IFavoriteRepository favoriteRepository) : base(navigationService)
+            IPromotionService promotionService) : base(navigationService)
         {
             _pageDialogService = pageDialogService;
             _crashlyticsService = crashlyticsService;
             _categoryService = categoryService;
-            _favoriteService = favoriteService;
             _productService = productService;
             _promotionService = promotionService;
-            _favoriteRepository = favoriteRepository;
 
             ListData.CollectionChanged += (s, e) => UpdateViewModeStateData(s as IEnumerable<object>);
         }

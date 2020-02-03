@@ -46,6 +46,7 @@
                 </Grid.RowDefinitions>
 
                 <SearchBar
+                    AutomationId="SearchBarSearchId"
                     x:Name="SearchBar"
                     SearchCommand="{Binding SearchCommand}" 
                     SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"
@@ -66,6 +67,7 @@
             <controls:HasErrorControl Title="Erro ao carregar os dados." IsVisible="{Binding ViewModelState.HasError}" VerticalOptions="CenterAndExpand" Grid.Row="1" Grid.Column="0"></controls:HasErrorControl>
 
             <ListView
+                AutomationId="ListViewListDataId"
                     ItemsSource="{Binding ListData, Mode=OneWay}"
                     IsPullToRefreshEnabled="True"
                     RefreshCommand="{Binding RefreshCommand}"
@@ -118,8 +120,8 @@
 
                                     <Label Text="{Binding FinalPrice, Converter={StaticResource ValueToBrlConverter}}" FontSize="Subtitle" FontAttributes="Bold" VerticalTextAlignment="Center" Grid.Row="2" Grid.Column="1" />
                                     <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
-                                        <ImageButton Source="icon_remove" Command="{Binding BindingContext.DecrementQuantityCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource ColorAccent}" HeightRequest="35" />
-                                        <ImageButton Source="icon_add" Command="{Binding BindingContext.IncrementQuantityCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource ColorAccent}" HeightRequest="35" />
+                                        <ImageButton AutomationId="ImageButtonDecrementQuantityId" Source="icon_remove" Command="{Binding BindingContext.DecrementQuantityCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource ColorAccent}" HeightRequest="35" />
+                                        <ImageButton AutomationId="ImageButtonIncrementQuantityId" Source="icon_add" Command="{Binding BindingContext.IncrementQuantityCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource ColorAccent}" HeightRequest="35" />
                                     </StackLayout>
 
                                     <Label Text="{Binding Promotion}" FontSize="Small" BackgroundColor="{StaticResource PreferGray}" IsVisible="{Binding Promotion, Converter={StaticResource StringIsNotNullOrEmptyToBooleanConverter}}" HorizontalOptions="End" Padding="1" HorizontalTextAlignment="End" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" />
@@ -130,7 +132,7 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Button Text="{Binding TextButtonBuy}" Command="{Binding BuyCommand}" FontAttributes="Bold" BackgroundColor="{StaticResource ColorPrimary}" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Grid.Row="2" Grid.Column="0" />
+            <Button AutomationId="ButtonBuyId" Text="{Binding TextButtonBuy}" Command="{Binding BuyCommand}" FontAttributes="Bold" BackgroundColor="{StaticResource ColorPrimary}" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Grid.Row="2" Grid.Column="0" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

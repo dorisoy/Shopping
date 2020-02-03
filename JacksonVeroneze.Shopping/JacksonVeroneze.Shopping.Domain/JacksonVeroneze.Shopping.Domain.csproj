@@ -6,7 +6,9 @@
 
   <ItemGroup>
     <Folder Include="Commands\" />
+    <Folder Include="Entities\" />
     <Folder Include="Enums\" />
+    <Folder Include="Interfaces\Repositories\" />
   </ItemGroup>
 
   <ItemGroup>

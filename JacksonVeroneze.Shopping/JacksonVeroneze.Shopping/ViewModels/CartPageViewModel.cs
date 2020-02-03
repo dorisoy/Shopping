@@ -1,19 +1,12 @@
-﻿using JacksonVeroneze.Shopping.Domain.Interface.Repositories;
-using JacksonVeroneze.Shopping.Domain.Interface.Services;
-using JacksonVeroneze.Shopping.Domain.Results;
-using JacksonVeroneze.Shopping.MvvmHelpers;
+﻿using JacksonVeroneze.Shopping.MvvmHelpers;
 using JacksonVeroneze.Shopping.Services.Interfaces;
 using JacksonVeroneze.Shopping.Util;
 using JacksonVeroneze.Shopping.Views;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
-using Xamarin.Forms;
 
 namespace JacksonVeroneze.Shopping.ViewModels
 {
