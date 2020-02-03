@@ -6,8 +6,8 @@ namespace JacksonVeroneze.Shopping.Domain.Interface.Services
 {
     public interface IFavoriteService : IBaseService
     {
-        Task AddAsync(Favorite entity);
+        //Task AddAsync(Favorite entity);
 
-        Task RemoveAsync(Favorite entity);
+        //Task RemoveAsync(int entity);
     }
 }

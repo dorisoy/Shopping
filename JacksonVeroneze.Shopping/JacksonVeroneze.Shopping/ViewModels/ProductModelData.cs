@@ -13,6 +13,13 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
         public int? CategoryId { get; set; }
 
+        private string _promotion;
+        public string Promotion
+        {
+            get => _promotion;
+            set => SetProperty(ref _promotion, value);
+        }
+
         private double _originalPrice = 0;
         public double OriginalPrice
         {

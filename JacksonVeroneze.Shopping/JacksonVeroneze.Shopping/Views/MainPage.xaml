@@ -16,6 +16,7 @@
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
             <converters:ValueGreaterThanZeroConverter x:Key="ValueGreaterThanZeroConverter" />
             <converters:ValueToBrlConverter x:Key="ValueToBrlConverter" />
+            <converters:StringIsNotNullOrEmptyToBooleanConverter x:Key="StringIsNotNullOrEmptyToBooleanConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -79,7 +80,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame Padding="10,20,10,20" Margin="10,7,10,7">
+                            <Frame Padding="10,20,10,10" Margin="10,7,10,7">
                                 <Grid ColumnSpacing="10">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="25*" />
@@ -92,6 +93,7 @@
                                         <RowDefinition Height="10*" />
                                         <RowDefinition Height="22" />
                                         <RowDefinition Height="25" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
                                     <ffimageloading:CachedImage Source="{Binding Photo}" CacheDuration= "50" RetryCount= "3" RetryDelay= "600" DownsampleToViewSize = "true" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" />
@@ -119,6 +121,8 @@
                                         <ImageButton Source="icon_remove" Command="{Binding BindingContext.DecrementQuantityCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource ColorAccent}" HeightRequest="35" />
                                         <ImageButton Source="icon_add" Command="{Binding BindingContext.IncrementQuantityCommand,Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource ColorAccent}" HeightRequest="35" />
                                     </StackLayout>
+
+                                    <Label Text="{Binding Promotion}" FontSize="Small" BackgroundColor="{StaticResource PreferGray}" IsVisible="{Binding Promotion, Converter={StaticResource StringIsNotNullOrEmptyToBooleanConverter}}" HorizontalOptions="End" Padding="1" HorizontalTextAlignment="End" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" />
                                 </Grid>
                             </Frame>
                         </ViewCell>

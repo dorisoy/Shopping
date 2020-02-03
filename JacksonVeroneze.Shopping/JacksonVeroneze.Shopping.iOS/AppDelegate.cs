@@ -37,7 +37,7 @@ namespace JacksonVeroneze.Shopping.iOS
     {
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<ISQLiteConnectionProvider, SQLiteConnectionProvider>();
+            containerRegistry.Register<IDbConnectionProvider, DbConnectionProvider>();
         }
     }
 }

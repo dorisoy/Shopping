@@ -33,7 +33,7 @@ namespace JacksonVeroneze.Shopping.Droid
     {
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<ISQLiteConnectionProvider, SQLiteConnectionProvider>();
+            containerRegistry.Register<IDbConnectionProvider, DbConnectionProvider>();
         }
     }
 }

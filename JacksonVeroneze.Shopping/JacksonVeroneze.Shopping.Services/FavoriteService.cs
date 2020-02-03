@@ -25,26 +25,26 @@ namespace JacksonVeroneze.Shopping.Services
         public FavoriteService(IFavoriteRepository favoriteRepository)
             => _favoriteRepository = favoriteRepository;
 
-        //
-        // Summary:
-        //     /// Method responsible for creating a record. ///
-        //
-        // Parameters:
-        //   entity:
-        //     The entity param.
-        //
-        public Task AddAsync(Favorite entity)
-            => _favoriteRepository.AddAsync(entity);
+        //////
+        ////// Summary:
+        //////     /// Method responsible for creating a record. ///
+        //////
+        ////// Parameters:
+        //////   entity:
+        //////     The entity param.
+        //////
+        //public Task AddAsync(Favorite entity)
+        //    => _favoriteRepository.AddAsync(entity);
 
-        //
-        // Summary:
-        //     /// Method responsible for remove a record. ///
-        //
-        // Parameters:
-        //   entity:
-        //     The entity param.
-        //
-        public Task RemoveAsync(Favorite entity)
-            => _favoriteRepository.AddAsync(entity);
+        //////
+        ////// Summary:
+        //////     /// Method responsible for remove a record. ///
+        //////
+        ////// Parameters:
+        //////   entity:
+        //////     The entity param.
+        //////
+        //public Task RemoveAsync(int entity)
+        //    => _favoriteRepository.RemoveAsync(entity);
     }
 }

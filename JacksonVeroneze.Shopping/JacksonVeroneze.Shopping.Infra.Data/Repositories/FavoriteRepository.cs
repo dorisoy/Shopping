@@ -1,7 +1,6 @@
 ﻿using JacksonVeroneze.Shopping.Common;
 using JacksonVeroneze.Shopping.Domain.Entities;
 using JacksonVeroneze.Shopping.Domain.Interface.Repositories;
-using System.Threading.Tasks;
 
 namespace Inovadora.GVIS.Infra.Data.Repositories
 {
@@ -19,8 +18,8 @@ namespace Inovadora.GVIS.Infra.Data.Repositories
         //   connectionProvider:
         //     The connectionProvider param.
         //
-        public FavoriteRepository(ISQLiteConnectionProvider connectionProvider) : base(connectionProvider)
-            => _connection.CreateTableAsync<Favorite>();
+        public FavoriteRepository(IDbConnectionProvider connectionProvider) : base(connectionProvider)
+             => _context = _connection.GetCollection<Favorite>(nameof(Favorite));
 
         //
         // Summary:
@@ -30,12 +29,12 @@ namespace Inovadora.GVIS.Infra.Data.Repositories
         //   productId:
         //     The productId param.
         //
-        public Task<Favorite> FindByProductId(int productId)
+        public Favorite FindByProductId(int productId)
         {
-            return _connection
-                    .Table<Favorite>()
+            return _context
+                    .Query()
                     .Where(x => x.ProductId == productId && x.DeletedAt == null)
-                    .FirstOrDefaultAsync();
+                    .FirstOrDefault();
         }
     }
 }

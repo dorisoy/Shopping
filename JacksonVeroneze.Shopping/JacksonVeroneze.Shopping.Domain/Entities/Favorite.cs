@@ -1,5 +1,6 @@
 ﻿using JacksonVeroneze.Shopping.Common;
-using SQLite;
+using LiteDB;
+using System;
 
 namespace JacksonVeroneze.Shopping.Domain.Entities
 {
@@ -7,7 +8,6 @@ namespace JacksonVeroneze.Shopping.Domain.Entities
     // Summary:
     //     Class responsible for the entity.
     //
-    [Table("Favorite")]
     public class Favorite : BaseEntity
     {
         //
@@ -27,10 +27,8 @@ namespace JacksonVeroneze.Shopping.Domain.Entities
         public Favorite(int productId) : base()
             => ProductId = productId;
 
-        [PrimaryKey, AutoIncrement, NotNull]
-        public int Id { get; private set; }
+        public Guid Id { get; private set; } = Guid.NewGuid();
 
-        [NotNull]
         public int ProductId { get; private set; }
 
         //

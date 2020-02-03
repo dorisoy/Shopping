@@ -1,4 +1,5 @@
-﻿using JacksonVeroneze.Shopping.Domain.Interface.Repositories;
+﻿using JacksonVeroneze.Shopping.Domain.Entities;
+using JacksonVeroneze.Shopping.Domain.Interface.Repositories;
 using JacksonVeroneze.Shopping.Domain.Interface.Services;
 using JacksonVeroneze.Shopping.Domain.Results;
 using JacksonVeroneze.Shopping.MvvmHelpers;
@@ -14,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace JacksonVeroneze.Shopping.ViewModels
@@ -46,7 +48,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
         public DelegateCommand<ProductModelData> AddRemoveFavoriteCommand =>
             _addRemoveFavoriteCommand ?? (
-                _addRemoveFavoriteCommand = new DelegateCommand<ProductModelData>(AddRemoveFavoriteAsync));
+                _addRemoveFavoriteCommand = new DelegateCommand<ProductModelData>(AddRemoveFavorite));
 
         public DelegateCommand<ProductModelData> DecrementQuantityCommand =>
             _decrementQuantityCommand ?? (
@@ -170,20 +172,27 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //   productModelData:
         //     The productModelData param.
         //
-        public void AddRemoveFavoriteAsync(ProductModelData productModelData)
+        public void AddRemoveFavorite(ProductModelData productModelData)
         {
             try
             {
-                //Favorite favorite = await _favoriteRepository.FindByProductId(productModelData.Id);
+                bool isFavorite = Preferences.Get(productModelData.Id.ToString(), false);
 
-                //if (favorite != null && productModelData.IsFavorite is true)
-                //    await _favoriteRepository.RemoveAsync(favorite);
+                if (isFavorite && productModelData.IsFavorite is true)
+                {
+                    Preferences.Remove(productModelData.Id.ToString());
+                    productModelData.IsFavorite = false;
 
-                //favorite = new Favorite(productModelData.Id);
+                    _crashlyticsService.TrackEvent(ApplicationEvents.REMOVED_PRODUCT_FROM_FAVORITES, new Dictionary<string, string> { { "Product Name", productModelData.Name } });
 
-                //await _favoriteService.AddAsync(favorite);
+                    return;
+                }
 
-                productModelData.IsFavorite = !productModelData.IsFavorite;
+                Preferences.Set(productModelData.Id.ToString(), true);
+
+                productModelData.IsFavorite = true;
+
+                _crashlyticsService.TrackEvent(ApplicationEvents.ADDED_PRODUCT_IN_FAVORITES, new Dictionary<string, string> { { "Product Name", productModelData.Name } });
             }
             catch (Exception e)
             {
@@ -430,9 +439,6 @@ namespace JacksonVeroneze.Shopping.ViewModels
                     new Dictionary<string, string>() { { "Page", nameof(MainPage) } });
 
             ViewModelState.IsLoading = false;
-
-            //_crashlyticsService.TrackEventAsync(ApplicationEvents.OPEN_SCREAM,
-            //    new Dictionary<string, string>() { { "Page", nameof(AuthenticatePage) } });
         }
 
         //
@@ -474,8 +480,6 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
                 foreach (ProductResult product in productResults)
                 {
-                    //Favorite favorite = await _favoriteRepository.FindByProductId(x.Id);
-
                     ProductModelData productModelData = _cart.FirstOrDefault(x => x.Id == product.Id);
 
                     if (productModelData != null)
@@ -484,6 +488,16 @@ namespace JacksonVeroneze.Shopping.ViewModels
                     }
                     else
                     {
+                        string promotionName = string.Empty;
+
+                        if (product.CategoryId != null)
+                        {
+                            PromotionResult promotionResult = FindPromotionByProductCategoryId((int)product.CategoryId);
+                            promotionName = promotionResult?.Name;
+                        }
+
+                        bool isFavorite = Preferences.Get(product.Id.ToString(), false);
+
                         productModelDatas.Add(new ProductModelData()
                         {
                             Id = product.Id,
@@ -493,7 +507,8 @@ namespace JacksonVeroneze.Shopping.ViewModels
                             OriginalPrice = product.Price,
                             FinalPrice = product.Price,
                             CategoryId = product.CategoryId,
-                            IsFavorite = false
+                            IsFavorite = isFavorite,
+                            Promotion = promotionName
                         });
                     }
                 }
@@ -566,6 +581,23 @@ namespace JacksonVeroneze.Shopping.ViewModels
                             .FirstOrDefault();
 
             return promotionPoliceResult;
+        }
+
+        //
+        // Summary:
+        //     Method responsible for find Promotion.
+        // 
+        // Parameters:
+        //   categoryId:
+        //     The categoryId param.
+        //
+        private PromotionResult FindPromotionByProductCategoryId(int categoryId)
+        {
+            PromotionResult promotionResult = _promotions
+                    .Where(x => x.CategoryId == categoryId)
+                    .FirstOrDefault();
+
+            return promotionResult;
         }
 
         //

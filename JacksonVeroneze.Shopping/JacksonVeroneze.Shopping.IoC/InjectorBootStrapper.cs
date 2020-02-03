@@ -20,7 +20,7 @@ namespace JacksonVeroneze.Shopping.IoC
             containerRegistry.Register<ICrashlyticsService, CrashlyticsService>();
 
             // Repositories
-            containerRegistry.Register<IFavoriteRepository, FavoriteRepository>();
+            containerRegistry.RegisterSingleton<IFavoriteRepository, FavoriteRepository>();
 
             // Network
             containerRegistry.Register<MakeRequest, MakeRequest>();
