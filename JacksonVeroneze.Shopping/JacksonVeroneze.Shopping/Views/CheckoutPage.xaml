@@ -46,6 +46,7 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
+      <ScrollView>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="10*" />
@@ -90,10 +91,10 @@
 
             <Grid Margin="10" Grid.Row="1" Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="20"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -128,5 +129,6 @@
 
             <Button Text="Finalizar a Compra" Command="{Binding BuyCommand}" FontAttributes="Bold" BackgroundColor="{StaticResource ColorPrimary}" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Grid.Row="2" Grid.Column="0" />
         </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
