@@ -20,7 +20,7 @@ Android build | [![Build Status](https://build.appcenter.ms/v0.1/apps/95a9e66b-e
 [Visual Studio 2019](https://visualstudio.microsoft.com/) ou [Visual Studio for Mac](https://visualstudio.microsoft.com/) com Xamarin.
 
 ### Desenvolvimento 
-Clone este repositório e abra o [ShoppingCarts.sln](https://github.com/jacksonveroneze/Shopping/blob/master/JacksonVeroneze.Shopping.sln) com o Visual Studio ou o Visual Studio para Mac.
+Clone este repositório e abra o [JacksonVeroneze.Shopping.sln](https://github.com/jacksonveroneze/Shopping/blob/master/JacksonVeroneze.Shopping.sln) com o Visual Studio ou o Visual Studio para Mac.
 
 ### Construido com
 * [Visual Studio 2019](https://visualstudio.microsoft.com/) com Xamarin
