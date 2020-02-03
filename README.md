@@ -38,6 +38,8 @@ Clone este repositório e abra o [JacksonVeroneze.Shopping.sln](https://github.c
 ### Lojas
 [Google Play](https://play.google.com/store/apps/details?id=com.jacksonveroneze.shopping)
 
+Informamos que este App possui finalidade apenas demonstrativa, sendo a compra fictícia e nenhum dado do usuário será coletado.
+
 ## Autor
 * **Jackson Veroneze** - *Contributor* - [JacksonVeroneze](https://github.com/JacksonVeroneze)
 
