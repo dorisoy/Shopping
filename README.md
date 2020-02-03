@@ -35,6 +35,9 @@ Clone este repositório e abra o [ShoppingCarts.sln](https://github.com/jacksonv
   <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/5.jpeg" width="150" height="300">
 </p>
 
+### Lojas
+[Google Play](https://play.google.com/store/apps/details?id=com.jacksonveroneze.shopping)
+
 ## Autor
 * **Jackson Veroneze** - *Contributor* - [JacksonVeroneze](https://github.com/JacksonVeroneze)
 
