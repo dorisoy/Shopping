@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JacksonVeroneze.Shopping.Do
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JacksonVeroneze.Shopping.Infra.CrossCutting", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Infra.CrossCutting\JacksonVeroneze.Shopping.Infra.CrossCutting.csproj", "{26C42A33-2D24-42AD-8385-34242EA2DD37}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JacksonVeroneze.Shopping.Infra.Data", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Infra.Data\JacksonVeroneze.Shopping.Infra.Data.csproj", "{0AC40828-A534-467E-A98D-ED9A47DA42D2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JacksonVeroneze.Shopping.IoC", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.IoC\JacksonVeroneze.Shopping.IoC.csproj", "{1526A916-C5D9-4201-994D-D5111E1AE1FF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JacksonVeroneze.Shopping.Services", "JacksonVeroneze.Shopping\JacksonVeroneze.Shopping.Services\JacksonVeroneze.Shopping.Services.csproj", "{D013AE81-3266-4318-863C-879E5ED1F9AF}"
