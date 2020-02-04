@@ -56,12 +56,12 @@
 
                                     <ffimageloading:CachedImage Source="{Binding Photo}" CacheDuration= "50" RetryCount= "3" RetryDelay= "600" DownsampleToViewSize = "true" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" />
 
-                                    <Label Text="{Binding Name}" FontSize="Subtitle" FontAttributes="Bold" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" />
+                                    <Label Text="{Binding Name}" Style="{StaticResource DefaultLabelTitleProduct}" FontAttributes="Bold" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" />
 
                                     <Label Grid.Row="1" Grid.Column="1">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding Quantity}" FontSize="Subtitle" FontAttributes="Bold" />
+                                                <Span Text="{Binding Quantity}" Style="{StaticResource DefaultLabelTitleProduct}" FontAttributes="Bold" />
                                                 <Span Text=" UN" />
                                             </FormattedString>
                                         </Label.FormattedText>
@@ -72,7 +72,7 @@
                                         <Label Text="{Binding PercentageDiscount, StringFormat='{0}%'}" TextColor="White" />
                                     </StackLayout>
 
-                                    <Label Text="{Binding Total, Converter={StaticResource ValueToBrlConverter}}" Padding="3" BackgroundColor="LightGray" FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" Grid.Row="1" Grid.Column="3" />
+                                    <Label Text="{Binding Total, Converter={StaticResource ValueToBrlConverter}}" Padding="3" BackgroundColor="LightGray" Style="{StaticResource DefaultLabelTitleProduct}" FontAttributes="Bold" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" Grid.Row="1" Grid.Column="3" />
                                 </Grid>
                             </Frame>
                         </ViewCell>

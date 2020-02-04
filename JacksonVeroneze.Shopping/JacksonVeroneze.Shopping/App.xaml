@@ -11,5 +11,20 @@
         <Color x:Key="TextColorSecondary">#A5A6AA</Color>
         <Color x:Key="ErrorColor">#D32F2F</Color>
         <Color x:Key="PreferGray">#D3D3D3</Color>
+
+        <Style TargetType="NavigationPage">
+            <Setter Property="BarBackgroundColor" Value="{StaticResource ColorPrimary}"/>
+            <Setter Property="BarTextColor" Value="White"/>
+            <Setter Property="BackgroundColor" Value="White"/>
+        </Style>
+
+        <Style TargetType="Label" x:Key="DefaultLabelTitleProduct">
+            <Setter Property="FontSize">
+                <Setter.Value>
+                    <OnPlatform x:TypeArguments="Font" Android="Subtitle" iOS="Default" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Application.Resources>
 </prism:PrismApplication>
