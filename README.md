@@ -26,7 +26,7 @@ Clone este repositório e abra o [JacksonVeroneze.Shopping.sln](https://github.c
 * [Visual Studio 2019](https://visualstudio.microsoft.com/) com Xamarin
 * [Visual Studio App Center](https://appcenter.ms/) - Compilação, Diagnostics, Analytics
 
-## Capturas
+## Capturas Android
 <p>
   <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/1.jpeg" width="150" height="300">
   <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/2.jpeg" width="150" height="300">
