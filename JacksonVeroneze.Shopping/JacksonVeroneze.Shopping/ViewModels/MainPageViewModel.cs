@@ -313,7 +313,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
         {
             try
             {
-                if (ViewModelState.HasError)
+                if (ViewModelState.HasError || ViewModelState.IsLoading is true)
                     return;
 
                 IList<IActionSheetButton> buttons = new List<IActionSheetButton>();
@@ -339,7 +339,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
                 foreach (CategoryResult category in _categories)
                     buttons.Add(ActionSheetButton.CreateButton(category.Name, showProductsBycategoryAction, category));
 
-                await _pageDialogService.DisplayActionSheetAsync("Escolha a categoria para filtrar.", buttons.ToArray());
+                await _pageDialogService.DisplayActionSheetAsync("Escolha a categoria para filtrar", buttons.ToArray());
             }
             catch (Exception e)
             {

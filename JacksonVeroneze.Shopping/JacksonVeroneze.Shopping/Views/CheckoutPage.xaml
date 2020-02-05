@@ -127,7 +127,7 @@
                 </Entry>
             </Grid>
 
-            <Button Text="Finalizar a Compra" Command="{Binding BuyCommand}" FontAttributes="Bold" BackgroundColor="{StaticResource ColorPrimary}" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Grid.Row="2" Grid.Column="0" />
+            <Button Text="Finalizar a Compra" Command="{Binding BuyCommand}" FontAttributes="Bold" BackgroundColor="{StaticResource ColorPrimary}" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="Center" CornerRadius="0" Grid.Row="2" Grid.Column="0" />
         </Grid>
         </ScrollView>
     </ContentPage.Content>
