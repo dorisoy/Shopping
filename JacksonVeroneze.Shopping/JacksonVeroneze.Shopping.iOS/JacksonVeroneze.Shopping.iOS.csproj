@@ -171,6 +171,29 @@
     <ImageAsset Include="Assets.xcassets\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-80-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-88.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-100.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-172.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-196.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-1024-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-48.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-55.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-58-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-87-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-120-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-180-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-16.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-32.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-32-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-64.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-128.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-256.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-256-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-512.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-512-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-1024-2.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-216.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h@2x.png" />
