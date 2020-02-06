@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             xmlns:controls="clr-namespace:JacksonVeroneze.Shopping.Controls"
-             xmlns:converters="clr-namespace:JacksonVeroneze.Shopping.Converters"
              xmlns:prism="http://prismlibrary.com"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:converters="clr-namespace:JacksonVeroneze.Shopping.Converters"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="JacksonVeroneze.Shopping.Views.CartPage"
              x:Name="Page"
@@ -57,23 +56,23 @@
 
                                     <ffimageloading:CachedImage Source="{Binding Photo}" CacheDuration= "50" RetryCount= "3" RetryDelay= "600" DownsampleToViewSize = "true" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" />
 
-                                    <Label Text="{Binding Name}" Style="{StaticResource DefaultLabelTitleProduct}" FontAttributes="Bold" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" />
+                                    <Label Text="{Binding Name}" FontSize="15" FontAttributes="Bold" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" />
 
                                     <Label Grid.Row="1" Grid.Column="1">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding Quantity}" Style="{StaticResource DefaultLabelTitleProduct}" FontAttributes="Bold" />
+                                                <Span Text="{Binding Quantity}" FontSize="15" FontAttributes="Bold" />
                                                 <Span Text=" UN" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
 
-                                    <StackLayout BackgroundColor="{StaticResource ColorPrimary}" Orientation="Horizontal" HorizontalOptions="End" IsVisible="{Binding PercentageDiscount, Converter={StaticResource ValueGreaterThanZeroConverter}}" Padding="3" Grid.Row="1" Grid.Column="2">
-                                        <Image Source="icon_arrow_downward" WidthRequest="15" HeightRequest="15" HorizontalOptions="Start" />
-                                        <Label Text="{Binding PercentageDiscount, StringFormat='{0}%'}" TextColor="White" />
+                                    <StackLayout BackgroundColor="{StaticResource ColorPrimary}" Orientation="Horizontal" HorizontalOptions="End" IsVisible="{Binding PercentageDiscount, Converter={StaticResource ValueGreaterThanZeroConverter}}" Padding="3,0,3,0" Grid.Row="1" Grid.Column="2">
+                                        <Image Source="icon_arrow_downward" WidthRequest="15" HeightRequest="15" HorizontalOptions="Start" VerticalOptions="Center" />
+                                        <Label Text="{Binding PercentageDiscount, StringFormat='{0}%'}" TextColor="White" VerticalTextAlignment="Center" />
                                     </StackLayout>
 
-                                    <Label Text="{Binding Total, Converter={StaticResource ValueToBrlConverter}}" Padding="3" BackgroundColor="LightGray" Style="{StaticResource DefaultLabelTitleProduct}" FontAttributes="Bold" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" Grid.Row="1" Grid.Column="3" />
+                                    <Label Text="{Binding Total, Converter={StaticResource ValueToBrlConverter}}" Padding="0,0,3,0" BackgroundColor="LightGray" FontSize="15" FontAttributes="Bold" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" VerticalTextAlignment="Center" Grid.Row="1" Grid.Column="3" />
                                 </Grid>
                             </Frame>
                         </ViewCell>
@@ -81,7 +80,7 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Grid ColumnSpacing="10" Padding="10" Grid.Row="1" Grid.Column="0">
+            <Grid ColumnSpacing="10" Margin="10,0,10,0" Grid.Row="1" Grid.Column="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -103,8 +102,8 @@
                 </Label>
 
                 <BoxView HeightRequest="1" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
-                <Label Text="Total" FontSize="Large" FontAttributes="Bold" Grid.Row="2" Grid.Column="0" />
-                <Label Text="{Binding Total, Converter={StaticResource ValueToBrlConverter}}" HorizontalTextAlignment="End" FontSize="Large" FontAttributes="Bold" Grid.Row="2" Grid.Column="1" />
+                <Label Text="Total" FontSize="15" FontAttributes="Bold" Grid.Row="2" Grid.Column="0" />
+                <Label Text="{Binding Total, Converter={StaticResource ValueToBrlConverter}}" HorizontalTextAlignment="End" FontSize="15" FontAttributes="Bold" Grid.Row="2" Grid.Column="1" />
             </Grid>
 
             <Button Text="Finalizar a Compra" Command="{Binding BuyCommand}" FontAttributes="Bold" BackgroundColor="{StaticResource ColorPrimary}" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Grid.Row="2" CornerRadius="0" Grid.Column="0" />

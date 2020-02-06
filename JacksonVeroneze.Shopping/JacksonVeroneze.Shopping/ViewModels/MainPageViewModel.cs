@@ -462,7 +462,6 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
             try
             {
-
                 foreach (ProductResult product in productResults)
                 {
                     ProductModelData productModelData = _cart.FirstOrDefault(x => x.Id == product.Id);

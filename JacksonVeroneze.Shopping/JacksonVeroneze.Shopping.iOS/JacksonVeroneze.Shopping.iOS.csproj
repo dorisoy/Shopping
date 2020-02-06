@@ -56,7 +56,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>None</MtouchLink>
     <CodesignProvision>VS: WildCard Development</CodesignProvision>
-<MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -171,29 +171,75 @@
     <ImageAsset Include="Assets.xcassets\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-80-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-88.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-100.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-172.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-196.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-1024-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-48.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-55.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-58-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-87-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-120-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-180-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-16.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-32.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-32-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-64.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-128.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-256.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-256-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-512.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-512-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-1024-2.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-216.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-80-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-88.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-100.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-172.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-196.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-1024-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-48.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-55.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-58-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-87-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-120-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-180-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-16.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-32.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-32-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-64.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-128.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-256.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-256-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-512.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-512-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-1024-2.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-216.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h@2x.png" />
@@ -219,7 +265,7 @@
     <PackageReference Include="Xamarin.Essentials">
       <Version>1.3.1</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="4.4.0.991537" />
+    <PackageReference Include="Xamarin.Forms" Version="4.4.0.991640" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
   </ItemGroup>
   <ItemGroup>
@@ -430,8 +476,6 @@
   <ItemGroup>
     <BundleResource Include="Resources\icon_star_border%403x.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Renderers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

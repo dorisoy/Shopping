@@ -17,14 +17,5 @@
             <Setter Property="BarTextColor" Value="White"/>
             <Setter Property="BackgroundColor" Value="White"/>
         </Style>
-
-        <Style TargetType="Label" x:Key="DefaultLabelTitleProduct">
-            <Setter Property="FontSize">
-                <Setter.Value>
-                    <OnPlatform x:TypeArguments="Font" Android="16" iOS="16" />
-                </Setter.Value>
-            </Setter>
-        </Style>
-
     </Application.Resources>
 </prism:PrismApplication>

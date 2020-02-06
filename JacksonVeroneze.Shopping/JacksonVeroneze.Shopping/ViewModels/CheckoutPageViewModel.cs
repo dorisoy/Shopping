@@ -5,7 +5,9 @@ using JacksonVeroneze.Shopping.Views;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
+using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace JacksonVeroneze.Shopping.ViewModels
@@ -82,9 +84,17 @@ namespace JacksonVeroneze.Shopping.ViewModels
                 return;
             }
 
+            if (IsCreditCardInfoValid(CardNumber, Expiration, Cvv) is false)
+            {
+                await _pageDialogService.DisplayAlertAsync("Erro", "Os dados do cartão são inválidos.", "Ok");
+                return;
+            }
+
             UserDialogs.Instance.ShowLoading("Aguarde, efetuando pagamento.", MaskType.Black);
             await Task.Delay(3000);
             UserDialogs.Instance.HideLoading();
+
+            _crashlyticsService.TrackEvent(ApplicationEvents.CHECKOUT, new Dictionary<string, string> { { "Value", "Value" } });
 
             await _pageDialogService.DisplayAlertAsync("Aviso", "Pagamento efetuado com sucesso.", "Ok");
         }
@@ -105,6 +115,30 @@ namespace JacksonVeroneze.Shopping.ViewModels
                     new Dictionary<string, string>() { { "Page", nameof(CheckoutPage) } });
 
             ViewModelState.IsLoading = false;
+        }
+
+        public static bool IsCreditCardInfoValid(string cardNo, string expiryDate, string cvv)
+        {
+            var cardCheck = new Regex(@"^(1298|1267|4512|4567|8901|8933)([\-\s]?[0-9]{4}){3}$");
+            var monthCheck = new Regex(@"^(0[1-9]|1[0-2])$");
+            var yearCheck = new Regex(@"^20[0-9]{2}$");
+            var cvvCheck = new Regex(@"^\d{3}$");
+
+            if (!cardCheck.IsMatch(cardNo))
+                return false;
+            if (!cvvCheck.IsMatch(cvv))
+                return false;
+
+            var dateParts = expiryDate.Split('/');    
+            if (!monthCheck.IsMatch(dateParts[0]) || !yearCheck.IsMatch(dateParts[1])) // <3 - 6>
+                return false;
+
+            var year = int.Parse(dateParts[1]);
+            var month = int.Parse(dateParts[0]);
+            var lastDateOfExpiryMonth = DateTime.DaysInMonth(year, month);
+            var cardExpiry = new DateTime(year, month, lastDateOfExpiryMonth, 23, 59, 59);
+
+            return (cardExpiry > DateTime.Now && cardExpiry < DateTime.Now.AddYears(6));
         }
     }
 }
