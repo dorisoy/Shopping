@@ -2,7 +2,7 @@
 
 Projeto desenvolvido para demonstrar a plataforma Xamarin Forms.
 
-## Status da comilação
+## Status da compilação
 Platforma  | Status
 ------------- | -------------
 Android build | [![Build Status](https://build.appcenter.ms/v0.1/apps/95a9e66b-eae7-44b0-83fd-2d3e09dd7e8b/branches/master/badge)](https://build.appcenter.ms/v0.1/apps/95a9e66b-eae7-44b0-83fd-2d3e09dd7e8b/branches/master/badge)   
