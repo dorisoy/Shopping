@@ -80,13 +80,13 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // 
         public async void BuyAsync()
         {
+            ViewModelState.IsBusyNavigating = true;
+
             _crashlyticsService.TrackEvent(ApplicationEvents.CHECKOUT,
                     new Dictionary<string, string>() { { "Value", Total.ToString() } });
 
-            ViewModelState.IsBusyNavigating = true;
-
             await _navigationService.NavigateAsync(nameof(CheckoutPage), new NavigationParameters {
-                { "total", Total.ToString() },
+                    { "total", Total.ToString() },
             });
 
             ViewModelState.IsBusyNavigating = false;

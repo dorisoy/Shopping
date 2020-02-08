@@ -103,12 +103,12 @@ namespace JacksonVeroneze.Shopping.ViewModels
         private readonly Action<MainPageViewModel> VerifyItensToBuy = (vm) => vm.HasItensToBuy = vm._cart.Any();
 
         private IList<CategoryResult> _categories = new List<CategoryResult>();
-        private IList<ProductResult> _products = new List<ProductResult>();
+        //private IList<ProductResult> _products = new List<ProductResult>();
         private IList<PromotionResult> _promotions = new List<PromotionResult>();
 
         private IList<ProductModelData> _cart = new List<ProductModelData>();
 
-        private CancellationTokenSource _throttleCts = new CancellationTokenSource();
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         //
         // Summary:
@@ -127,8 +127,8 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //   categoryService:
         //     The categoryService param.
         //
-        //   favoriteService:
-        //     The favoriteService param.
+        //   productService:
+        //     The productService param.
         //
         //   promotionService:
         //     The promotionService param.
@@ -277,16 +277,14 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
             try
             {
-                Interlocked.Exchange(ref _throttleCts, new CancellationTokenSource()).Cancel();
+                Interlocked.Exchange(ref _cancellationTokenSource, new CancellationTokenSource()).Cancel();
 
-                await Task.Delay(TimeSpan.FromMilliseconds(500), _throttleCts.Token)
-                      .ContinueWith(task =>
+                await Task.Delay(TimeSpan.FromMilliseconds(500), _cancellationTokenSource.Token)
+                      .ContinueWith(async task =>
                       {
                           _currentFilterCategory = null;
 
-                          List<ProductResult> listDataSearch = _products.Where(x => x.Name.ToUpperInvariant().Contains(value.ToUpperInvariant())).ToList();
-
-                          ListData.ReplaceRange(FactoryProductModelDataAsync(listDataSearch));
+                          ListData.ReplaceRange(FactoryProductModelDataAsync(await _productService.SearchAsync(value)));
                       },
                     CancellationToken.None,
                     TaskContinuationOptions.OnlyOnRanToCompletion,
@@ -318,20 +316,20 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
                 IList<IActionSheetButton> buttons = new List<IActionSheetButton>();
 
-                Action<CategoryResult> showProductsBycategoryAction = (i) =>
+                Action<CategoryResult> showProductsBycategoryAction = async (i) =>
                 {
                     _currentFilterCategory = i.Id;
 
-                    ListData.ReplaceRange(FactoryProductModelDataAsync(_products.Where(x => x.CategoryId == i.Id).ToList()));
+                    ListData.ReplaceRange(FactoryProductModelDataAsync(await _productService.FindByCategotyIdAsync(i.Id)));
 
                     _crashlyticsService.TrackEvent(ApplicationEvents.FILTER_BY_CATEGORY, new Dictionary<string, string> { { "Category Name", i.Name } });
                 };
 
-                Action showAllProducts = () =>
+                Action showAllProducts = async () =>
                 {
                     _currentFilterCategory = null;
 
-                    ListData.ReplaceRange(FactoryProductModelDataAsync(_products));
+                    ListData.ReplaceRange(FactoryProductModelDataAsync(await _productService.FindAllAsync()));
                 };
 
                 buttons.Add(ActionSheetButton.CreateButton("Todas as categorias", showAllProducts));
@@ -353,20 +351,24 @@ namespace JacksonVeroneze.Shopping.ViewModels
         // Summary:
         //     Method responsible for performing the command action.
         // 
-        public void RefreshData()
+        public async void RefreshData()
         {
             try
             {
                 ViewModelState.IsRefresh = true;
 
+                IList<ProductResult> productResults = new List<ProductResult>();
+
                 if (_currentFilterCategory is null)
                 {
-                    ListData.ReplaceRange(FactoryProductModelDataAsync(_products));
+                    productResults = await _productService.FindAllAsync();
                 }
                 else
                 {
-                    ListData.ReplaceRange(FactoryProductModelDataAsync(_products.Where(x => x.CategoryId == _currentFilterCategory).ToList()));
+                    productResults = await _productService.FindByCategotyIdAsync((int)_currentFilterCategory);
                 }
+
+                ListData.ReplaceRange(FactoryProductModelDataAsync(productResults));
 
                 ViewModelState.IsRefresh = false;
             }
@@ -435,10 +437,11 @@ namespace JacksonVeroneze.Shopping.ViewModels
             try
             {
                 _categories = await _categoryService.FindAllAsync();
-                _products = await _productService.FindAllAsync();
                 _promotions = await _promotionService.FindAllAsync();
 
-                ListData.ReplaceRange(FactoryProductModelDataAsync(_products));
+                IList<ProductResult> products = await _productService.FindAllAsync();
+
+                ListData.ReplaceRange(FactoryProductModelDataAsync(products));
             }
             catch (Exception e)
             {
@@ -476,7 +479,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
 
                         if (product.CategoryId != null)
                         {
-                            PromotionResult promotionResult = FindPromotionByProductCategoryId((int)product.CategoryId);
+                            PromotionResult promotionResult = FindPromotionByCategoryId((int)product.CategoryId);
                             promotionName = promotionResult?.Name;
                         }
 
@@ -575,7 +578,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
         //   categoryId:
         //     The categoryId param.
         //
-        private PromotionResult FindPromotionByProductCategoryId(int categoryId)
+        private PromotionResult FindPromotionByCategoryId(int categoryId)
         {
             PromotionResult promotionResult = _promotions
                     .Where(x => x.CategoryId == categoryId)

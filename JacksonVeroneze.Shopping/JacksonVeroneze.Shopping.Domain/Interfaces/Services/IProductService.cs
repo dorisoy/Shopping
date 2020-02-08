@@ -8,5 +8,9 @@ namespace JacksonVeroneze.Shopping.Domain.Interface.Services
     public interface IProductService : IBaseService
     {
         Task<IList<ProductResult>> FindAllAsync();
+
+        Task<IList<ProductResult>> FindByCategotyIdAsync(int categoryId);
+
+        Task<IList<ProductResult>> SearchAsync(string name);
     }
 }
