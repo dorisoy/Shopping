@@ -1,4 +1,5 @@
 ﻿using JacksonVeroneze.Shopping.Common;
+using LiteDB;
 using System;
 
 namespace JacksonVeroneze.Shopping.Domain.Entities
@@ -26,7 +27,7 @@ namespace JacksonVeroneze.Shopping.Domain.Entities
         public Favorite(int productId) : base()
             => ProductId = productId;
 
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public ObjectId Id { get; private set; } = ObjectId.NewObjectId();
 
         public int ProductId { get; private set; }
 

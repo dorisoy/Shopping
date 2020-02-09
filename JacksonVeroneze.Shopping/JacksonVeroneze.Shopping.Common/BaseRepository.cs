@@ -12,10 +12,10 @@ namespace JacksonVeroneze.Shopping.Common
         public BaseRepository(IDbConnectionProvider connectionProvider)
             => _context = connectionProvider.GetConnection().GetCollection<T>();
 
-        public bool Add(T entity)
+        public void Add(T entity)
             => _context.Insert(entity);
 
-        public bool Remove(Guid id)
+        public void Remove(ObjectId id)
              => _context.Delete(id);
     }
 }

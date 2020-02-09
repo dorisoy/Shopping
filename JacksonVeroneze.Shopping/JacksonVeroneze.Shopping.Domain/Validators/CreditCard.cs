@@ -14,12 +14,13 @@ namespace JacksonVeroneze.Shopping.Domain.Results
 
             if (!cardCheck.IsMatch(cardNo))
                 return false;
+
             if (!cvvCheck.IsMatch(cvv))
                 return false;
 
             string[] dateParts = expiryDate.Split('/');
 
-            if (!monthCheck.IsMatch(dateParts[0]) || !yearCheck.IsMatch(dateParts[1])) // <3 - 6>
+            if (!monthCheck.IsMatch(dateParts[0]) || !yearCheck.IsMatch(dateParts[1]))
                 return false;
 
             int year = int.Parse(dateParts[1]);
