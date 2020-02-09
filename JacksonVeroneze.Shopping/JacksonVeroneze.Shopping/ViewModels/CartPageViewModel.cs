@@ -1,6 +1,7 @@
 ﻿using JacksonVeroneze.Shopping.MvvmHelpers;
 using JacksonVeroneze.Shopping.Services.Interfaces;
 using JacksonVeroneze.Shopping.Util;
+using JacksonVeroneze.Shopping.ViewModelsData;
 using JacksonVeroneze.Shopping.Views;
 using Prism.Commands;
 using Prism.Navigation;
@@ -83,7 +84,7 @@ namespace JacksonVeroneze.Shopping.ViewModels
             ViewModelState.IsBusyNavigating = true;
 
             _crashlyticsService.TrackEvent(ApplicationEvents.CHECKOUT,
-                    new Dictionary<string, string>() { { "Value", Total.ToString() } });
+                    new Dictionary<string, string>() { { "total", Total.ToString() } });
 
             await _navigationService.NavigateAsync(nameof(CheckoutPage), new NavigationParameters {
                     { "total", Total.ToString() },

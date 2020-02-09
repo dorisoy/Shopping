@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behavioursFormatters="clr-namespace:JacksonVeroneze.Shopping.Behaviours.Formatters"
              xmlns:behavioursValidators="clr-namespace:JacksonVeroneze.Shopping.Behaviours.Validators"
+             xmlns:converters="clr-namespace:JacksonVeroneze.Shopping.Converters"
              xmlns:converters1="clr-namespace:JacksonVeroneze.Shopping.Converters.CreditCard"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="JacksonVeroneze.Shopping.Views.CheckoutPage"
@@ -20,6 +21,8 @@
 
             <converters1:CardNumberToColorConverter x:Key="CardColorConverter"
                     Amex="#3177CB" Dinners="#1B4F8F" Discover="#E9752F" JCB="#9E2921" MasterCard="#394854" Visa="#2867BA" NotRecognized="#75849D"/>
+
+            <converters:ValueToBrlConverter x:Key="ValueToBrlConverter" />
 
             <Color x:Key="CardLabelColor">#B5BBC2</Color>
             <Color x:Key="CardValueColor">LightGray</Color>
@@ -76,34 +79,33 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10*"/>
-                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Text="Total" FontAttributes="Bold" FontSize="Large" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="0" />
-                    <Label Text="{Binding Total}" FontAttributes="Bold" FontSize="Large" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="0" />
+                    <Label Text="Total" FontAttributes="Bold" FontSize="Medium" Grid.Row="0" Grid.Column="0" />
+                    <Label Text="{Binding Total, Converter={StaticResource ValueToBrlConverter}}" FontAttributes="Bold" FontSize="Medium" Grid.Row="0" Grid.Column="1" />
                     
-                    <Label Text="Insira as informações do seu cartão de crédito/débito" FontSize="Medium" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Label Text="Insira as informações do seu cartão de crédito/débito" FontSize="Medium" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
 
-                    <Entry Text="{Binding CardNumber}" Keyboard="Numeric" Placeholder="Número do cartão" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Entry Text="{Binding CardNumber}" Keyboard="Numeric" Placeholder="Número do cartão" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                         <Entry.Behaviors>
                             <behavioursFormatters:MaskedBehavior Mask="XXXX XXXX XXXX XXXX"/>
                             <behavioursValidators:MaxLengthValidatorBehavior MaxLength="19"/>
                         </Entry.Behaviors>
                     </Entry>
 
-                    <Entry Text="{Binding Expiration}" Keyboard="Numeric" Placeholder="MM/YYYY" Grid.Row="4" Grid.Column="0">
+                    <Entry Text="{Binding Expiration}" Keyboard="Numeric" Placeholder="MM/YYYY" Grid.Row="3" Grid.Column="0">
                         <Entry.Behaviors>
                             <behavioursFormatters:MaskedBehavior Mask="XX/XXXX"/>
                             <behavioursValidators:MaxLengthValidatorBehavior MaxLength="7"/>
                         </Entry.Behaviors>
                     </Entry>
 
-                    <Entry Text="{Binding Cvv}" Keyboard="Numeric" Placeholder="CVV" HorizontalTextAlignment="Center" Grid.Row="4" Grid.Column="1">
+                    <Entry Text="{Binding Cvv}" Keyboard="Numeric" Placeholder="CVV" HorizontalTextAlignment="Center" Grid.Row="3" Grid.Column="1">
                         <Entry.Behaviors>
                             <behavioursFormatters:MaskedBehavior Mask="XXX" />
                             <behavioursValidators:MaxLengthValidatorBehavior MaxLength="3"/>

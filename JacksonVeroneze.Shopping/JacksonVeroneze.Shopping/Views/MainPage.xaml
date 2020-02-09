@@ -21,7 +21,7 @@
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="icon_filter"  Command="{Binding FilterByCategoryCommand}"></ToolbarItem>
+        <ToolbarItem AutomationId="ToolbarItemFilterByCategoryId" IconImageSource="icon_filter" Command="{Binding FilterByCategoryCommand}"></ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>

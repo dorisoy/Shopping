@@ -23,8 +23,7 @@ namespace JacksonVeroneze.Shopping.iOS.Renderers
 
         private void SetColors()
         {
-            Control.SetTitleColor(Element.IsEnabled ? Element.TextColor.ToUIColor() : UIColor.Gray, Element.IsEnabled ? UIControlState.Normal : UIControlState.Disabled);
-            Control.BackgroundColor = Element.IsEnabled ? Element.BackgroundColor.ToUIColor() : UIColor.DarkGray;
+            Control.SetTitleColor(Element.IsEnabled ? Element.TextColor.ToUIColor() : UIColor.DarkGray, Element.IsEnabled ? UIControlState.Normal : UIControlState.Disabled);
         }
     }
 }

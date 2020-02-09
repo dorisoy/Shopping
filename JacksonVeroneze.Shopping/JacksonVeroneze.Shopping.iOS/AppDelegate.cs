@@ -23,9 +23,11 @@ namespace JacksonVeroneze.Shopping.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            UITabBar.Appearance.SelectedImageTintColor = UIColor.FromRGB(0x91, 0xCA, 0x47); // green
-                                                                                            // switch
-            UISwitch.Appearance.OnTintColor = UIColor.FromRGB(0x91, 0xCA, 0x47); // green
+            UITabBar.Appearance.SelectedImageTintColor = UIColor.FromRGB(0x91, 0xCA, 0x47);
+
+            UISwitch.Appearance.OnTintColor = UIColor.FromRGB(0x91, 0xCA, 0x47);
+
+            Xamarin.Calabash.Start();
 
             Xamarin.Forms.Forms.Init();
 

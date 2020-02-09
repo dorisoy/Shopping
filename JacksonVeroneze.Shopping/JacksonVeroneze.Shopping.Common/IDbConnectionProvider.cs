@@ -1,6 +1,9 @@
-﻿namespace JacksonVeroneze.Shopping.Common
+﻿using LiteDB;
+
+namespace JacksonVeroneze.Shopping.Common
 {
     public interface IDbConnectionProvider
     {
+        LiteDatabase GetConnection();
     }
 }

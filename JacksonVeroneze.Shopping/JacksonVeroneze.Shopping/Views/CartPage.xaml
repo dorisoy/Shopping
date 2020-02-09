@@ -106,7 +106,7 @@
                 <Label Text="{Binding Total, Converter={StaticResource ValueToBrlConverter}}" HorizontalTextAlignment="End" FontSize="15" FontAttributes="Bold" Grid.Row="2" Grid.Column="1" />
             </Grid>
 
-            <Button Text="Finalizar a Compra" Command="{Binding BuyCommand}" FontAttributes="Bold" BackgroundColor="{StaticResource ColorPrimary}" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Grid.Row="2" CornerRadius="0" Grid.Column="0" />
+            <Button AutomationId="ButtonCheckoutId" Text="Finalizar a Compra" Command="{Binding BuyCommand}" FontAttributes="Bold" BackgroundColor="{StaticResource ColorPrimary}" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Grid.Row="2" CornerRadius="0" Grid.Column="0" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>
