@@ -30,7 +30,7 @@ namespace JacksonVeroneze.Shopping.Domain.Results
             int lastDateOfExpiryMonth = DateTime.DaysInMonth(year, month);
             var cardExpiry = new DateTime(year, month, lastDateOfExpiryMonth, 23, 59, 59);
 
-            return (cardExpiry > DateTime.Now && cardExpiry < DateTime.Now.AddYears(6));
+            return (cardExpiry > DateTime.Now && cardExpiry < DateTime.Now.AddYears(10));
         }
     }
 }

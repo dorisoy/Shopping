@@ -594,7 +594,6 @@ namespace JacksonVeroneze.Shopping.ViewModels
                 promotionName = promotionResult?.Name;
             }
 
-            //Favorite favorite = _context.Query().Where(x => x.ProductId == product.Id).FirstOrDefault();
             Favorite favorite = _favoriteRepository.FindByProductId(product.Id);
 
             return new ProductModelData()
