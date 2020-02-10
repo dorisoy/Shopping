@@ -28,11 +28,20 @@ Clone este repositório e abra o [JacksonVeroneze.Shopping.sln](https://github.c
 
 ## Capturas Android
 <p>
-  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/1.jpeg" width="150" height="300">
-  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/2.jpeg" width="150" height="300">
-  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/3.jpeg" width="150" height="300">
-  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/4.jpeg" width="150" height="300">
-  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/5.jpeg" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/Android/1.jpeg" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/Android/2.jpeg" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/Android/3.jpeg" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/Android/4.jpeg" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/Android/5.jpeg" width="150" height="300">
+</p>
+
+## Capturas iOS
+<p>
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/iOS/1.png" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/iOS/2.png" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/iOS/3.png" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/iOS/4.png" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/iOS/5.png" width="150" height="300">
 </p>
 
 ### Lojas
