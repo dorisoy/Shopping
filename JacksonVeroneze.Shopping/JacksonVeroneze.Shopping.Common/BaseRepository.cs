@@ -1,5 +1,5 @@
-﻿using LiteDB;
-using System;
+﻿using System;
+using LiteDB;
 
 namespace JacksonVeroneze.Shopping.Common
 {
@@ -10,12 +10,12 @@ namespace JacksonVeroneze.Shopping.Common
         protected ILiteCollection<T> _context;
 
         public BaseRepository(IDbConnectionProvider connectionProvider)
-            => _connection = connectionProvider.GetConnection();
+            => _context = connectionProvider.GetConnection().GetCollection<T>();
 
-        public bool Add(T entity)
-            => _context.Upsert(entity);
+        public void Add(T entity)
+            => _context.Insert(entity);
 
-        public bool Remove(Guid id)
+        public void Remove(ObjectId id)
              => _context.Delete(id);
     }
 }

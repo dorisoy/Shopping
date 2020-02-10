@@ -27,44 +27,69 @@ namespace JacksonVeroneze.Shopping.Tests
         }
 
         [Test]
-        public void WelcomeTextIsDisplayed()
+        public void TestOpenFilterByCategory()
         {
-            app.EnterText("SearchBarSearchId", "Galaxy");
+            app.Tap(x => x.Marked("ToolbarItemFilterByCategoryId"));
 
-            int total = app.Query(x => x.Id("ListViewListDataId").Child()).Length;
+            app.WaitForElement(x => x.Text("Escolha a categoria para filtrar"));
 
-            Assert.IsNotNull(total);
+            Assert.IsTrue(app.Query(x => x.Text("Escolha a categoria para filtrar")).Any());
         }
 
         [Test]
-        public void WelcomeTextIsDisplayed1()
+        public void TestMakePurchaseAndNavigateToPaymentScreen()
         {
+            app.EnterText(x => x.Marked("SearchBarSearchId"), "Galaxy");
+
+            app.Tap(x => x.Marked("NoResourceEntry-22"));
+
+            app.Tap(x => x.Marked("ButtonBuyId"));
+
+            app.Tap(x => x.Marked("ButtonCheckoutId"));
+
+            app.Query(x => x.Text("Checkout"));
+        }
+
+        [Test]
+        public void BuyButtonShouldRemainDisabledAfterSearching()
+        {
+            //app.Repl();
+
             app.EnterText("SearchBarSearchId", "Galaxy");
 
-            bool isReadOnly = app.Query(c => c.Id("ButtonBuyId").Property("IsEnable").Value<bool>()).FirstOrDefault();
+            bool isReadOnly = app.Query(c => c.Marked("ButtonBuyId")).First().Enabled;
 
             Assert.AreEqual(false, isReadOnly);
         }
 
         [Test]
-        public void WelcomeImageButtonIncrementQuantityId()
+        public void BuyButtonMustBeEnabledAfterSearchingAndAddingAnItem()
         {
-            app.EnterText("SearchBarSearchId", "Galaxy A5 2016");
+            //app.Repl();
 
-            app.ScrollDown();
-            app.PressEnter();
+            app.EnterText("SearchBarSearchId", "Galaxy");
 
-            app.Tap(x => x.Marked("ImageButtonIncrementQuantityId"));
-            app.Tap(x => x.Marked("ImageButtonIncrementQuantityId"));
+            app.Tap(x => x.Marked("NoResourceEntry-22"));
 
-            app.ScrollDown();
-            app.PressEnter();
-
-            Thread.Sleep(200);
-
-            bool isReadOnly = app.Query(c => c.Id("ButtonBuyId").Property("IsEnable").Value<bool>()).FirstOrDefault();
+            bool isReadOnly = app.Query(c => c.Marked("ButtonBuyId")).First().Enabled;
 
             Assert.AreEqual(true, isReadOnly);
+        }
+
+        [Test]
+        public void DiscountForThreeCamerasShouldBe15Percent()
+        {
+            //app.Repl();
+
+            app.Tap(x => x.Marked("ToolbarItemFilterByCategoryId"));
+
+            app.Tap(x => x.Text("Câmeras fotográficas"));
+
+            app.Tap(x => x.Marked("NoResourceEntry-22"));
+            app.Tap(x => x.Marked("NoResourceEntry-22"));
+            app.Tap(x => x.Marked("NoResourceEntry-22"));
+
+            Assert.IsTrue(app.Query(x => x.Text("15%")).Any());
         }
     }
 }

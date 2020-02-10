@@ -2,7 +2,7 @@
 
 Projeto desenvolvido para demonstrar a plataforma Xamarin Forms.
 
-## Status da comilação
+## Status da compilação
 Platforma  | Status
 ------------- | -------------
 Android build | [![Build Status](https://build.appcenter.ms/v0.1/apps/95a9e66b-eae7-44b0-83fd-2d3e09dd7e8b/branches/master/badge)](https://build.appcenter.ms/v0.1/apps/95a9e66b-eae7-44b0-83fd-2d3e09dd7e8b/branches/master/badge)   
@@ -20,11 +20,25 @@ Android build | [![Build Status](https://build.appcenter.ms/v0.1/apps/95a9e66b-e
 [Visual Studio 2019](https://visualstudio.microsoft.com/) ou [Visual Studio for Mac](https://visualstudio.microsoft.com/) com Xamarin.
 
 ### Desenvolvimento 
-Clone este repositório e abra o [ShoppingCarts.sln](https://github.com/jacksonveroneze/Shopping/blob/master/JacksonVeroneze.Shopping.sln) com o Visual Studio ou o Visual Studio para Mac.
+Clone este repositório e abra o [JacksonVeroneze.Shopping.sln](https://github.com/jacksonveroneze/Shopping/blob/master/JacksonVeroneze.Shopping.sln) com o Visual Studio ou o Visual Studio para Mac.
 
 ### Construido com
 * [Visual Studio 2019](https://visualstudio.microsoft.com/) com Xamarin
 * [Visual Studio App Center](https://appcenter.ms/) - Compilação, Diagnostics, Analytics
+
+## Capturas Android
+<p>
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/1.jpeg" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/2.jpeg" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/3.jpeg" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/4.jpeg" width="150" height="300">
+  <img src="https://github.com/jacksonveroneze/Shopping/blob/master/Screenshots/5.jpeg" width="150" height="300">
+</p>
+
+### Lojas
+[Google Play](https://play.google.com/store/apps/details?id=com.jacksonveroneze.shopping)
+
+Informamos que este App possui finalidade apenas demonstrativa, sendo a compra fictícia e nenhum dado do usuário será coletado.
 
 ## Autor
 * **Jackson Veroneze** - *Contributor* - [JacksonVeroneze](https://github.com/JacksonVeroneze)

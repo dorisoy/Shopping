@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
              x:Class="JacksonVeroneze.Shopping.App">
+    
     <Application.Resources>
         <Color x:Key="ColorPrimary">#70378D</Color>
         <Color x:Key="ColorPrimaryDark">#42275B</Color>
@@ -11,5 +12,11 @@
         <Color x:Key="TextColorSecondary">#A5A6AA</Color>
         <Color x:Key="ErrorColor">#D32F2F</Color>
         <Color x:Key="PreferGray">#D3D3D3</Color>
+
+        <Style TargetType="NavigationPage">
+            <Setter Property="BarBackgroundColor" Value="{StaticResource ColorPrimary}"/>
+            <Setter Property="BarTextColor" Value="White"/>
+            <Setter Property="BackgroundColor" Value="White"/>
+        </Style>
     </Application.Resources>
 </prism:PrismApplication>

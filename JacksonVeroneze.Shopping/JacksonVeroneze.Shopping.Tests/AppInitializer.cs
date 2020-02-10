@@ -14,7 +14,7 @@ namespace JacksonVeroneze.Shopping.Tests
                  .StartApp();
             }
 
-            return ConfigureApp.iOS.StartApp();
+            return ConfigureApp.iOS.InstalledApp("com.jacksonveroneze.shopping").StartApp();
         }
     }
 }

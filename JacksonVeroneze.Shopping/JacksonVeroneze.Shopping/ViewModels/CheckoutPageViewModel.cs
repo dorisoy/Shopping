@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using JacksonVeroneze.Shopping.Domain.Results;
 using JacksonVeroneze.Shopping.Services.Interfaces;
 using JacksonVeroneze.Shopping.Util;
 using JacksonVeroneze.Shopping.Views;
@@ -47,6 +48,13 @@ namespace JacksonVeroneze.Shopping.ViewModels
             set => SetProperty(ref _cvv, value);
         }
 
+        private double _total = 0;
+        public double Total
+        {
+            get => _total;
+            set => SetProperty(ref _total, value);
+        }
+
         //
         // Summary:
         //     Method responsible for initializing the viewModel.
@@ -78,13 +86,20 @@ namespace JacksonVeroneze.Shopping.ViewModels
             if (string.IsNullOrEmpty(CardNumber) || string.IsNullOrEmpty(Expiration) || string.IsNullOrEmpty(Cvv))
             {
                 await _pageDialogService.DisplayAlertAsync("Erro", "Antes de prosseguir, informe os dados do cartão de crédito.", "Ok");
+                return;
+            }
 
+            if (CreditCard.IsValid(CardNumber, Expiration, Cvv) is false)
+            {
+                await _pageDialogService.DisplayAlertAsync("Erro", "Os dados do cartão são inválidos.", "Ok");
                 return;
             }
 
             UserDialogs.Instance.ShowLoading("Aguarde, efetuando pagamento.", MaskType.Black);
             await Task.Delay(3000);
             UserDialogs.Instance.HideLoading();
+
+            _crashlyticsService.TrackEvent(ApplicationEvents.CHECKOUT, new Dictionary<string, string> { { "Total", Total.ToString() } });
 
             await _pageDialogService.DisplayAlertAsync("Aviso", "Pagamento efetuado com sucesso.", "Ok");
         }
@@ -100,6 +115,8 @@ namespace JacksonVeroneze.Shopping.ViewModels
         public override void Initialize(INavigationParameters parameters)
         {
             ViewModelState.IsLoading = true;
+
+            Total = parameters.GetValue<double>("total");
 
             _crashlyticsService.TrackEvent(ApplicationEvents.OPEN_SCREAM,
                     new Dictionary<string, string>() { { "Page", nameof(CheckoutPage) } });

@@ -1,12 +1,12 @@
-﻿using LiteDB;
-using System;
+﻿using System;
+using LiteDB;
 
 namespace JacksonVeroneze.Shopping.Common
 {
     public interface IBaseRepository<T> where T : IBaseEntity
     {
-        bool Add(T entity);
+        void Add(T entity);
 
-        bool Remove(Guid id);
+        void Remove(ObjectId id);
     }
 }
